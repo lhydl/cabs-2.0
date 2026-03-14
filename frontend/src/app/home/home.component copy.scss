@@ -1,0 +1,168 @@
+/* ==========================================================================
+Main page styles
+========================================================================== */
+.hipster {
+  display: inline-block;
+  width: 347px;
+  height: 497px;
+  background: url('../../content/images/doctor.svg') no-repeat center;
+  background-size: contain;
+}
+
+// /* wait autoprefixer update to allow simple generation of high pixel density media query */
+// @media only screen and (-webkit-min-device-pixel-ratio: 2),
+//   only screen and (-moz-min-device-pixel-ratio: 2),
+//   only screen and (-o-min-device-pixel-ratio: 2/1),
+//   only screen and (min-resolution: 192dpi),
+//   only screen and (min-resolution: 2dppx) {
+//   .hipster {
+//     background: url('../../content/images/doctor.svg') no-repeat center top;
+//     background-size: contain;
+//   }
+// }
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
+
+@media (min-width: 768px) {
+  .col-md-3,
+  .col-md-9 {
+    margin-bottom: -60px;
+  }
+}
+.col-md-3 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.row2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.ButtonDiv {
+  padding: 10px;
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+  background-color: none;
+  height: 100%;
+  width: 50%;
+  min-width: 500px;
+}
+button {
+  background-color: #616d7c;
+  border: none;
+  outline: 2px solid black;
+}
+button:hover {
+  background-color: #41454b;
+}
+.custom-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding-left: 40px;
+  width: 20%;
+  min-width: 200px;
+  min-height: 10vh;
+  padding: 10px 30px;
+  padding-top: 15vh;
+  margin: 0 auto;
+}
+.custom-button b {
+  white-space: nowrap;
+}
+.book-appointment {
+  background-image: url('../../content/images/bookAppointment.png');
+  background-size: 10vh;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.view-appointment {
+  background-image: url('../../content/images/listIcon.png');
+  background-size: 10vh;
+  background-repeat: no-repeat;
+  background-position: center 45%;
+}
+
+.search-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.field-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.custom-select {
+  border: 1px solid #e2e2e2;
+  border-radius: 6px;
+  width: 205px;
+  font-size: 14px;
+  height: 38px;
+}
+
+.custom-input {
+  height: 38px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.custom-select .ng-select-container,
+.custom-select .ng-value-container {
+  height: 100%;
+}
+
+.btn-sm {
+  margin-left: 5px;
+}
+
+.circle-ball {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.green {
+  background-color: green;
+}
+.red {
+  background-color: red;
+}
+
+.QueueTable {
+  border: 2px solid #100f0f;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 20px;
+  width: 100%;
+  // width: fit-content; // Compact QueueTable
+  // margin: 0 auto; // Center the table horizontally
+}
+
+.QueueTable tbody tr:first-child {
+  background-color: #f5f5f5; // Highlighted row color
+}
+
+.QueueTable tbody tr:first-child td {
+  font-weight: bold;
+}
+
+.QueueTable tbody tr:first-child {
+  border: 3px solid green; // Green border around the first row only!!!
+}

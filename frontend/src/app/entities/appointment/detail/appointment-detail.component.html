@@ -1,0 +1,75 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (appointment) {
+      <div>
+        <h2 data-cy="appointmentDetailsHeading"><span>Appointment</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span>Queue Number</span></dt>
+          <dd>
+            <span>{{ appointment.id }}</span>
+          </dd>
+          <dt><span>Appointment Type</span></dt>
+          <dd>
+            <span>{{ appointment.apptType }}</span>
+          </dd>
+          <dt><span>Appointment Datetime</span></dt>
+          <dd>
+            <span>{{ appointment.apptDatetime | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span>Remarks</span></dt>
+          <dd>
+            <span>{{ appointment.remarks }}</span>
+          </dd>
+          <!-- <dt><span>Patient Id</span></dt>
+          <dd>
+            <span>{{ appointment.patientId }}</span>
+          </dd> -->
+          <!-- <dt><span>Doctor Id</span></dt>
+          <dd>
+            <span>{{ appointment.doctorId }}</span>
+          </dd> -->
+          <dt><h4>Patient Details</h4></dt>
+          <br />
+          <dt><span>Username</span></dt>
+          <dd>
+            <span>{{ patientDetails?.login }}</span>
+          </dd>
+          <dt><span>Name</span></dt>
+          <dd>
+            <span>{{ patientDetails?.firstName }} {{ patientDetails?.lastName }}</span>
+          </dd>
+          <dt><span>Date of Birth</span></dt>
+          <dd>
+            <span>{{ formattedDob }}</span>
+          </dd>
+          <dt><span>Gender</span></dt>
+          <dd>
+            <span>{{ patientDetails?.gender }}</span>
+          </dd>
+          <dt><span>Phone Number</span></dt>
+          <dd>
+            <span>{{ patientDetails?.phoneNumber }}</span>
+          </dd>
+          <dt><span>Email</span></dt>
+          <dd>
+            <span>{{ patientDetails?.email }}</span>
+          </dd>
+        </dl>
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+
+        <!-- <button type="button" [routerLink]="['/appointment', appointment.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+        </button> -->
+      </div>
+    }
+  </div>
+</div>

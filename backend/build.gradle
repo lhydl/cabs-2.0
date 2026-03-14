@@ -1,0 +1,127 @@
+plugins {
+    id 'java'
+    id 'war'
+    id 'org.springframework.boot' version '3.5.10'
+    id 'io.spring.dependency-management' version '1.1.7'
+
+    id "com.github.ben-manes.versions" version "0.53.0"
+}
+
+group = 'sg.gov.ica.cass'
+version = '0.0.1-SNAPSHOT'
+description = 'iams'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    mockitoAgent {
+        transitive = false
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+// Configure the project layout
+sourceSets {
+    integrationtest { //declare new sourceSet before dependencies
+        java {
+            compileClasspath += sourceSets.main.output //production classes and resources
+            runtimeClasspath += sourceSets.main.output
+        }
+    }
+}
+
+configurations {
+    integrationtestImplementation.extendsFrom implementation //production dependencies
+    integrationtestImplementation {
+        extendsFrom testImplementation
+        exclude group: "com.squareup.okhttp3"
+        //Needed in test task, but not needed in integrationtest
+    }
+    integrationtestRuntimeOnly.extendsFrom runtimeOnly
+}
+
+// Adding a test suite to run the tests in a source set
+tasks.register('integrationtest', Test) {
+    //To ensure int test's system timezone
+    jvmArgs '-Duser.timezone=Asia/Singapore'
+
+    systemProperty 'spring.profiles.active', 'local, integration-test'
+
+    group = 'verification'
+    description = 'To run integration tests.'
+
+    useJUnitPlatform()
+    failFast = false
+    maxHeapSize = '2G'
+
+    testClassesDirs = sourceSets.integrationtest.output.classesDirs
+    classpath = sourceSets.integrationtest.runtimeClasspath
+    shouldRunAfter test
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:4.0.4'
+    implementation 'io.jsonwebtoken:jjwt:0.13.0'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'net.javacrumbs.shedlock:shedlock-provider-jdbc-template:6.10.0'
+    implementation 'net.javacrumbs.shedlock:shedlock-spring:6.10.0'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    implementation 'org.liquibase:liquibase-core:5.0.1'
+    implementation "tech.jhipster:jhipster-framework:8.5.0"
+    implementation "org.springframework.boot:spring-boot-starter-cache"
+    implementation "org.ehcache:ehcache"
+    implementation "org.hibernate.orm:hibernate-jcache"
+    implementation "javax.cache:cache-api:1.1.1"
+    implementation "com.fasterxml.jackson.datatype:jackson-datatype-hibernate6"
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0"
+    implementation "org.mapstruct:mapstruct:1.5.5.Final"
+    annotationProcessor "org.mapstruct:mapstruct-processor:1.5.5.Final"
+    implementation "com.nimbusds:nimbus-jose-jwt:9.37.3"
+    implementation "org.springframework.boot:spring-boot-starter-oauth2-resource-server"
+    implementation "org.springframework.boot:spring-boot-starter-mail"
+    implementation "org.springframework.boot:spring-boot-starter-thymeleaf"
+
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // To remove warning when running unit tests: "Mockito is currently self-attaching to enable the inline-mock-maker."
+    // On Java 21+ this “self-attaching” agent is still allowed but will be blocked by default in future JDKs
+    // run ./gradlew dependencies --configuration testRuntimeClasspath to check mockito version used in spring-boot-starter-test
+    mockitoAgent 'org.mockito:mockito-core:5.17.0'
+
+    integrationtestImplementation 'com.unboundid:unboundid-ldapsdk'
+    integrationtestImplementation 'org.springframework.security:spring-security-test'
+    integrationtestImplementation 'com.microsoft.sqlserver:mssql-jdbc'
+
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+    jvmArgs "-javaagent:${configurations.mockitoAgent.singleFile}"
+}
+
+bootWar {
+    archiveFileName.set("cass-iams.war")
+}

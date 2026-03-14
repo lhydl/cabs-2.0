@@ -1,0 +1,192 @@
+<div>
+  <h2>
+    <span id="user-management-page-heading" data-cy="userManagementPageHeading">Manage Patients Accounts</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="clearSearch()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Refresh List</span>
+      </button>
+      <button class="btn btn-primary jh-create-entity" [routerLink]="['./new']">
+        <fa-icon icon="plus"></fa-icon> <span>Create New User</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <form [formGroup]="searchForm" class="search-form mt-4 mb-2" (ngSubmit)="filterUsers()">
+    <div class="field-container">
+      <input class="form-control" id="firstName" type="text" placeholder="Enter First Name" formControlName="firstName" />
+    </div>
+    <div class="field-container">
+      <input class="form-control" id="lastName" type="text" placeholder="Enter Last Name" formControlName="lastName" />
+    </div>
+    <div class="field-container">
+      <input class="form-control" id="login" type="text" placeholder="Enter Username" formControlName="login" />
+    </div>
+    <div class="field-container">
+      <input class="form-control" id="email" type="text" placeholder="Enter Email" formControlName="email" />
+    </div>
+    <button type="button" (click)="clearSearch()" class="btn btn-light btn-md">
+      <div class="btn-content">
+        <fa-icon icon="times" class="p-1"></fa-icon>
+        <span>Clear</span>
+      </div>
+    </button>
+    <button type="submit" class="btn btn-primary btn-md">
+      <div class="btn-content">
+        <fa-icon icon="search" class="p-1"></fa-icon>
+        <span>Search</span>
+      </div>
+    </button>
+  </form>
+
+  @if (displayedUsers.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span>No Patients Found</span>
+    </div>
+  }
+
+  @if (displayedUsers.length !== 0) {
+    <div class="table-responsive">
+      <table class="table table-striped" aria-describedby="user-management-page-heading">
+        <thead>
+          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="transition()">
+            <!-- <th scope="col" jhiSortBy="id"><span>ID</span> <fa-icon icon="sort"></fa-icon></th> -->
+            <th></th>
+            <th scope="col" jhiSortBy="firstName"><span>First Name</span> <fa-icon icon="sort"></fa-icon></th>
+            <th scope="col" jhiSortBy="lastName"><span>Last Name</span> <fa-icon icon="sort"></fa-icon></th>
+            <th scope="col" jhiSortBy="login"><span>Username</span> <fa-icon icon="sort"></fa-icon></th>
+            <th scope="col" jhiSortBy="email"><span>Email</span> <fa-icon icon="sort"></fa-icon></th>
+            <th scope="col"></th>
+            <!-- <th scope="col"><span>Profiles</span></th>
+            <th scope="col" jhiSortBy="createdDate"><span>Created date</span> <fa-icon icon="sort"></fa-icon></th>
+            <th scope="col" jhiSortBy="lastModifiedBy"><span>Modified by</span> <fa-icon icon="sort"></fa-icon></th>
+            <th scope="col" jhiSortBy="lastModifiedDate"><span>Modified date</span> <fa-icon icon="sort"></fa-icon></th> -->
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        @if (users) {
+          <tbody>
+            <tr *ngFor="let user of displayedUsers; let i = index">
+              <!-- <td>
+                            <a [routerLink]="['./', user.login, 'view']">{{ user.id }}</a>
+                          </td> -->
+              <td>
+                <strong>{{ (page - 1) * itemsPerPage + i + 1 }}</strong>
+              </td>
+              <td>{{ user.firstName }}</td>
+              <td>{{ user.lastName }}</td>
+              <td>{{ user.login }}</td>
+              <td>{{ user.email }}</td>
+              <td>
+                @if (!user.activated) {
+                  <button class="btn btn-danger btn-sm" (click)="setActive(user, true)">Deactivated</button>
+                } @else {
+                  <button
+                    class="btn btn-success btn-sm"
+                    (click)="setActive(user, false)"
+                    [disabled]="!currentAccount || currentAccount.login === user.login"
+                  >
+                    Activated
+                  </button>
+                }
+              </td>
+              <!-- <td>
+                            @for (authority of user.authorities; track $index) {
+                              <div>
+                                <span class="badge bg-info">{{ authority }}</span>
+                              </div>
+                            }
+                          </td>
+                          <td>{{ user.createdDate | date: 'dd/MM/yy HH:mm' }}</td>
+                          <td>{{ user.lastModifiedBy }}</td>
+                          <td>{{ user.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</td> -->
+              <td class="text-end">
+                <!-- <div class="btn-group">
+                              <button type="submit" [routerLink]="['./', user.login, 'view']" class="btn btn-info btn-sm">
+                                <fa-icon icon="eye"></fa-icon>
+                                <span class="d-none d-md-inline">View</span>
+                              </button>
+          
+                              <button
+                                type="submit"
+                                [routerLink]="['./', user.login, 'edit']"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm"
+                              >
+                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <span class="d-none d-md-inline">Edit</span>
+                              </button>
+          
+                              <button
+                                type="button"
+                                (click)="deleteUser(user)"
+                                class="btn btn-danger btn-sm"
+                                [disabled]="!currentAccount || currentAccount.login === user.login"
+                              >
+                                <fa-icon icon="times"></fa-icon>
+                                <span class="d-none d-md-inline">Delete</span>
+                              </button>
+                            </div> -->
+                <div class="btn-group">
+                  <a [routerLink]="['./', user.login, 'view']" class="btn btn-icon btn-sm view-icon" [ngbTooltip]="'View Details'">
+                    <fa-icon icon="eye"></fa-icon>
+                  </a>
+                  <a
+                    [routerLink]="['./', user.login, 'edit']"
+                    queryParamsHandling="merge"
+                    class="btn btn-icon btn-sm edit-icon"
+                    [ngbTooltip]="'Edit'"
+                  >
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                  </a>
+
+                  <button
+                    type="submit"
+                    (click)="deleteUser(user)"
+                    class="btn btn-icon btn-sm delete-icon"
+                    [disabled]="!currentAccount || currentAccount.login === user.login"
+                    [ngbTooltip]="'Delete'"
+                  >
+                    <fa-icon icon="trash-alt"></fa-icon>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        }
+      </table>
+    </div>
+  }
+
+  @if (users) {
+    <div>
+      <div class="d-flex justify-content-center">
+        <jhi-item-count [params]="{ page: page, totalItems: filteredUsers.length, itemsPerPage: itemsPerPage }"></jhi-item-count>
+      </div>
+
+      <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [collectionSize]="totalItems"
+          [(page)]="page"
+          [pageSize]="itemsPerPage"
+          [maxSize]="5"
+          [rotate]="true"
+          [boundaryLinks]="true"
+          (pageChange)="navigateToPage($event)"
+        ></ngb-pagination>
+      </div>
+    </div>
+  }
+
+  <!-- Demo: Step 1 -->
+  <!-- <div>
+    <button (click)="getAdminDetails()">test api call</button>
+    <span *ngIf="isSuccess">API call successful</span>
+  </div>
+  <div>NOTE: PATIENT TABLE UNUSED, USE JHI_USER TABLE</div> -->
+</div>

@@ -1,0 +1,166 @@
+<div class="row">
+  @if (account !== null) {
+    @if (account) {
+      <!-- <div class="col-md-2">
+        <span class="hipster img-fluid rounded"></span>
+      </div> -->
+    }
+  } @else {
+    <div class="col-md-3">
+      <span class="hipster img-fluid rounded"></span>
+    </div>
+  }
+
+  <div [ngClass]="isAdmin ? 'col-md-7' : 'col-md-6'">
+    <div class="content">
+      <div class="background-box px-4">
+        @if (account !== null) {
+          @if (account) {
+            <h1 id="home-logged-message" class="display-3">
+              Welcome, <span class="fw-bold text-primary">{{ account.firstName }}</span
+              >!
+            </h1>
+          }
+        } @else {
+          <h1 class="display-4"><span>Welcome to CABS!</span></h1>
+        }
+        <p class="lead">Book <b>same-day</b> appointments at our clinics up to <b>an hour</b> in advance.</p>
+      </div>
+
+      <!-- <div>
+        @if (account !== null) {
+        <div class="alert alert-success">
+          @if (account) {
+          <span id="home-logged-message">Hi {{ account.firstName }}!</span>
+          }
+        </div>
+        } @else {
+        <div class="alert alert-warning">
+            <span>If you want to </span>
+            <a class="alert-link" (click)="login()">sign in</a
+            ><span
+              >, you can try the default accounts:<br />- Administrator (login=&quot;admin&quot; and password=&quot;admin&quot;) <br />- User
+              (login=&quot;user&quot; and password=&quot;user&quot;).</span
+            >
+          </div>
+        <div class="alert alert-warning">
+            <span>To use the app,</span>&nbsp;
+            <a class="alert-link" routerLink="/login">Please sign in here!</a>
+          </div>
+          <div class="alert alert-warning">
+            <span>You don&apos;t have an account yet?</span>&nbsp;
+            <a class="alert-link" routerLink="/account/register">Register a new account</a>
+          </div>
+        }
+      </div> -->
+      <div class="actions-div">
+        <button type="submit" [routerLink]="['/appointment/new']" class="book-appointment custom-button px-5">
+          <!-- <img src="content/images/appointment.svg" class="book-appointment" alt="book-appointment"/> -->
+          <span class="pt-4">Book Appointment</span>
+        </button>
+        <button [routerLink]="['/appointment']" class="view-appointment custom-button px-5">
+          <span class="pt-4">View Appointments</span>
+        </button>
+        <button *jhiHasAnyAuthority="'ROLE_ADMIN'" [routerLink]="['/admin/user-management']" class="manage-patients custom-button px-5">
+          <span class="pt-4">Manage Patients</span>
+        </button>
+
+        <!-- <button type="submit" class="btn btn-primary custom-button book-appointment" [routerLink]="['/appointment/new']">
+          <span class="fw-bold text-dark">Book Appointment</span>
+        </button>
+        <button type="submit" class="btn btn-primary custom-button view-appointment" [routerLink]="['/appointment']">
+          <span class="fw-bold text-dark">View Appointments</span>
+        </button> -->
+      </div>
+    </div>
+  </div>
+
+  <!-- only show when signed in -->
+  @if (account != null) {
+    @if (account) {
+      <!-- only show to patients  -->
+      <div class="col-md-3 today-appt" *jhiHasAnyAuthority="'ROLE_USER'">
+        <h3 class="fw-bold">Appointments Today</h3>
+        <h4 class="p-2">{{ today }}</h4>
+
+        @if (userTodaysAppointments?.length === 0) {
+          <div class="alert alert-warning w-100" id="no-result">
+            <span class="justify-content-center">No appointments today</span>
+          </div>
+        }
+        @if (userTodaysAppointments?.length !== 0) {
+          <div *ngFor="let appt of userTodaysAppointments">
+            <div class="today-appt-card">
+              <span class="fw-bold">{{ appt.apptType }}</span>
+              <span>{{ appt.datetimeString }}</span>
+            </div>
+          </div>
+        }
+      </div>
+
+      <div class="col-md-3 queue-section">
+        <h3 class="fw-bold">Queue</h3>
+        <br />
+        <div class="current-queue">
+          <span>Currently Serving: </span>
+          <h3 class="q-number">{{ currentAppointment?.id }}</h3>
+        </div>
+        <br />
+        <div class="next-queue">
+          <span>Next Queue No: </span>
+          <h3 class="q-number">{{ nextAppointment?.id }}</h3>
+        </div>
+        <br />
+        <div class="your-queue" *jhiHasAnyAuthority="'ROLE_USER'">
+          <span>Your Q No.: </span>
+          <h3 class="q-number">{{ userQueueNum }}</h3>
+          <span>People before you: </span>
+          <h4 class="text-danger fw-bold">{{ numPeopleInFront }}</h4>
+        </div>
+        <div class="p-2 fst-italic">Last updated at {{ lastUpdatedTime }}</div>
+        <div class="p-2 small">Disclaimer: Queue number may not be called in sequence.</div>
+      </div>
+
+      <!-- only show to admin -->
+      <div class="col-md-3 admin-queue" *jhiHasAnyAuthority="'ROLE_ADMIN'">
+        <div>
+          <button class="btn btn-primary btn-md next-btn" (click)="onClickNext(1)">Next</button><br /><br />
+          <button class="btn btn-danger btn-md skip-btn" (click)="onClickNext(2)">Skip</button>
+        </div>
+      </div>
+    }
+  }
+
+  <!-- <p>If you have any question on JHipster:</p>
+
+    <ul>
+      <li><a href="https://www.jhipster.tech/" target="_blank" rel="noopener noreferrer">JHipster homepage</a></li>
+      <li>
+        <a href="https://stackoverflow.com/tags/jhipster/info" target="_blank" rel="noopener noreferrer">JHipster on Stack Overflow</a>
+      </li>
+      <li>
+        <a href="https://github.com/jhipster/generator-jhipster/issues?state=open" target="_blank" rel="noopener noreferrer"
+          >JHipster bug tracker</a
+        >
+      </li>
+      <li>
+        <a href="https://gitter.im/jhipster/generator-jhipster" target="_blank" rel="noopener noreferrer">JHipster public chat room</a>
+      </li>
+      <li><a href="https://twitter.com/jhipster" target="_blank" rel="noopener noreferrer">follow &#64;jhipster on Twitter</a></li>
+    </ul>
+
+    <p>
+      <span>If you like JHipster, don&apos;t forget to give us a star on</span>
+      <a href="https://github.com/jhipster/generator-jhipster" target="_blank" rel="noopener noreferrer">GitHub</a>!
+    </p> -->
+</div>
+<!-- <div class="row2">
+  <div class="ButtonDiv">
+    <button type="submit" class="btn btn-primary custom-button book-appointment" [routerLink]="['/appointment/new']">
+      <span class="fw-bold text-dark">Book Appointment</span>
+    </button>
+    <button type="submit" class="btn btn-primary custom-button view-appointment" [routerLink]="['/appointment']">
+      <span class="fw-bold text-dark">View Appointments</span>
+    </button>
+  </div>
+</div> -->

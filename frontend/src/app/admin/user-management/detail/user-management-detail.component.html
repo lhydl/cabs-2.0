@@ -1,0 +1,74 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (user) {
+      <div>
+        <h2>
+          <span>User: </span> <strong>{{ user.login }}</strong>
+        </h2>
+
+        <dl class="row-md jh-entity-details">
+          <dt><h4>Personal Details</h4></dt>
+          <br />
+
+          <dt><span>First Name</span></dt>
+          <dd>{{ user.firstName }}</dd>
+
+          <dt><span>Last Name</span></dt>
+          <dd>{{ user.lastName }}</dd>
+
+          <dt><span>Date of Birth</span></dt>
+          <dd>{{ formattedDob }}</dd>
+
+          <dt><span>Gender</span></dt>
+          <dd>{{ user.gender }}</dd>
+
+          <dt><span>Phone Number</span></dt>
+          <dd>{{ user.phoneNumber }}</dd>
+
+          <dt><span>Email</span></dt>
+          <dd>{{ user.email }}</dd>
+
+          <dt><h4>Account Details</h4></dt>
+          <br />
+
+          <dt><span>Username</span></dt>
+          <dd>
+            <span>{{ user.login }}</span>
+            @if (user.activated) {
+              <span class="badge bg-success">Activated</span>
+            } @else {
+              <span class="badge bg-danger">Deactivated</span>
+            }
+          </dd>
+
+          <dt><span>Created By</span></dt>
+          <dd>{{ user.createdBy }}</dd>
+
+          <dt><span>Created Date</span></dt>
+          <dd>{{ user.createdDate | date: 'dd/MM/yy HH:mm' }}</dd>
+
+          <dt><span>Modified By</span></dt>
+          <dd>{{ user.lastModifiedBy }}</dd>
+
+          <dt><span>Modified Date</span></dt>
+          <dd>{{ user.lastModifiedDate | date: 'dd/MM/yy HH:mm' }}</dd>
+
+          <dt><span>Profiles</span></dt>
+          <dd>
+            <ul class="list-unstyled">
+              @for (authority of user.authorities; track $index) {
+                <li>
+                  <span class="badge bg-info">{{ authority }}</span>
+                </li>
+              }
+            </ul>
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

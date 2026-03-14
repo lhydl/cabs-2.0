@@ -1,0 +1,220 @@
+<!-- @if (account == null) 
+{
+  <div class="row">
+    <div class="col-md-3">
+      <span class="hipster img-fluid rounded"></span>
+    </div>
+    <div class="col-md-9">
+      <div class="content">
+        <div>
+          <div class="background-box">
+            <h1 class="display-4"><span>Welcome, please Login/Sign up!</span></h1>
+          </div>
+          <div class="alert alert-warning">
+            <span>To use the app,</span>&nbsp;
+            <a class="alert-link" routerLink="/login">Please sign in here!</a>
+          </div>
+          <div class="alert alert-warning">
+            <span>You don&apos;t have an account yet?</span>&nbsp;
+            <a class="alert-link" routerLink="/account/register">Register a new account</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+} @else
+{
+  <div class="col-md-12">
+    <div class="content">
+        <div class="background-box">
+          @if (account) 
+          {
+            <h1 class="display-4"><span>Welcome, {{ account.firstName }}!</span></h1>
+          }
+        </div>
+        <div class="QueueTable" *ngIf="!(account !== null && account.authorities.includes('ROLE_ADMIN'))">
+          <h2 id="page-heading" data-cy="AppointmentHeading">
+            <span class="m-1">Current Queue</span>
+          </h2>
+          @if (allAppointments?.length === 0) 
+          {
+            <div class="alert alert-warning" id="no-result">
+              <span>No Queue</span>
+            </div>
+          }
+          @if (allAppointments?.length !== 0) 
+          {
+            <div class="table-responsive table-entities" id="entities">
+              <table class="table table-striped" aria-describedby="page-heading">
+                <thead>
+                  <tr>
+                    <th scope="col">
+                      <div class="d-flex">
+                          <span>ID</span>
+                      </div>
+                    </th>
+                    <th scope="col">
+                      <div class="d-flex">
+                        <span>Appointment Schedule</span>
+                      </div>
+                    </th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (appointment of allAppointments; track trackId) 
+                  {
+                    <tr data-cy="entityTable">
+                      <td>{{ appointment.id }}</td>
+                      <td>{{ appointment.apptDatetime | formatMediumDatetime }}</td>
+                        <td class="text-end">
+                          <div class="btn-group">
+                            <a *jhiHasAnyAuthority="'ROLE_ADMIN'"
+                              [routerLink]="['/appointment', appointment.id, 'view']"
+                              class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                              <fa-icon icon="eye"></fa-icon>
+                              <span class="d-none d-md-inline">View</span>
+                            </a>
+                          </div>
+                        </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          }
+        </div>
+        <div class="YourTodayAppointment">
+          <h2 id="page-heading" data-cy="AppointmentHeading">
+            <span class="m-1">{{ displayTitle }}</span>
+          </h2>
+            @if (filteredAppointments.length === 0) 
+            {
+              <div class="alert alert-warning" id="no-result">
+                <span>No Appointments found</span>
+              </div>
+            }
+            @if (filteredAppointments.length !== 0) 
+            {
+              <div class="table-responsive table-entities" id="entities">
+                <table class="table table-striped" aria-describedby="page-heading">
+                  <thead>
+                    <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+                      <th scope="col" jhiSortBy="id">
+                        <div class="d-flex">
+                          <span>ID</span>
+                          <fa-icon class="p-1" icon="sort"></fa-icon>
+                        </div>
+                      </th>
+                      <th scope="col" jhiSortBy="apptType">
+                        <div class="d-flex">
+                          <span>Appointment Type</span>
+                          <fa-icon class="p-1" icon="sort"></fa-icon>
+                        </div>
+                      </th>
+                      <th scope="col" jhiSortBy="apptDatetime">
+                        <div class="d-flex">
+                          <span>Appointment Schedule</span>
+                          <fa-icon class="p-1" icon="sort"></fa-icon>
+                        </div>
+                      </th>
+                      <th scope="col" jhiSortBy="remarks">
+                        <div class="d-flex">
+                          <span>Special Requests/Remarks</span>
+                          <fa-icon class="p-1" icon="sort"></fa-icon>
+                        </div>
+                      </th>
+                      <th *jhiHasAnyAuthority="'ROLE_ADMIN'" scope="col" jhiSortBy="patientId">
+                        <div class="d-flex">
+                          <span>Patient Name</span>
+                          <fa-icon class="p-1" icon="sort"></fa-icon>
+                        </div>
+                      </th>
+                      <th scope="col" jhiSortBy="status">
+                        <div class="d-flex">
+                          <span>Status</span>
+                          <fa-icon class="p-1" icon="sort"></fa-icon>
+                        </div>
+                      </th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    @for (appointment of filteredAppointments; track trackId) 
+                    {
+                      <tr data-cy="entityTable">
+                        <td>{{ appointment.id }}</td>
+                        <td>{{ appointment.apptType }}</td>
+                        <td>{{ appointment.apptDatetime | formatMediumDatetime }}</td>
+                        <td>{{ appointment.remarks }}</td>
+                        <td *jhiHasAnyAuthority="'ROLE_ADMIN'">{{ getPatientNameById(appointment.patientId) }}</td>
+                        <td><div class="circle-ball" [ngClass]="getStatusColorClass(appointment.status)"></div></td>
+                        <td class="text-end">
+                          <div class="btn-group">
+                            <a
+                              *jhiHasAnyAuthority="'ROLE_ADMIN'"
+                              [routerLink]="['/appointment', appointment.id, 'view']"
+                              class="btn btn-info btn-sm"
+                              data-cy="entityDetailsButton"
+                            >
+                              <fa-icon icon="eye"></fa-icon>
+                              <span class="d-none d-md-inline">View</span>
+                            </a>
+                            <a
+                              *ngIf="state !== 'past'"
+                              [routerLink]="['/appointment', appointment.id, 'edit']"
+                              class="btn btn-primary btn-sm"
+                              data-cy="entityEditButton"
+                            >
+                              <fa-icon icon="pencil-alt"></fa-icon>
+                              <span class="d-none d-md-inline">Edit</span>
+                            </a>
+          
+                            <button type="submit" (click)="delete(appointment)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                              <fa-icon icon="times"></fa-icon>
+                              <span class="d-none d-md-inline">Delete</span>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            }
+          
+            @if (appointments && appointments.length > 0) 
+            {
+              <div>
+                <div class="d-flex justify-content-center">
+                  <jhi-item-count [params]="{ page: page, totalItems: filteredAppointments.length, itemsPerPage: itemsPerPage }"></jhi-item-count>
+                </div>
+          
+                <div class="d-flex justify-content-center">
+                  <ngb-pagination
+                    [collectionSize]="totalItems"
+                    [page]="page"
+                    [pageSize]="itemsPerPage"
+                    [maxSize]="5"
+                    [rotate]="true"
+                    [boundaryLinks]="true"
+                    (pageChange)="navigateToPage($event)"
+                  ></ngb-pagination>
+                </div>
+              </div>
+            }
+          </div>
+    </div>
+  </div>
+}
+
+<div class="row2">
+  <div class="ButtonDiv">
+    <button type="submit" class="btn btn-primary custom-button book-appointment" [routerLink]="['/appointment/new']">
+      <b>Book Appointment</b>
+    </button>
+    <button type="submit" class="btn btn-primary custom-button view-appointment" [routerLink]="['/appointment']">
+      <b>View Appointments</b>
+    </button>
+  </div>
+</div> -->

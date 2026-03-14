@@ -1,0 +1,65 @@
+.btn-icon {
+  background-color: transparent;
+  /* Transparent background */
+  display: flex;
+  /* To center the icon */
+  justify-content: center;
+  /* Center horizontally */
+  align-items: center;
+  /* Center vertically */
+  border: none;
+  /* No border */
+}
+
+.btn-icon:focus {
+  outline: none;
+  /* Remove focus outline */
+  box-shadow: none;
+  /* Remove box-shadow */
+}
+
+.view-icon:hover {
+  color: teal;
+}
+
+.edit-icon:hover {
+  color: blue;
+}
+
+.delete-icon:hover {
+  color: red;
+}
+
+.search-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.field-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.field-container input.form-control {
+  width: 100%;
+}
+
+@media (max-width: 720px) {
+  .search-form {
+    flex-direction: column;
+  }
+
+  .field-container {
+    width: 100%;
+  }
+}
+
+.btn-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 21px;
+}
