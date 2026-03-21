@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+  <!-- Insert static data (authority) -->
+  <changeSet author="cabs-app" failOnError="false" id="1" runOnChange="true">
+    <preConditions onFail="MARK_RAN">
+      <sqlCheck expectedResult="0">
+        SELECT COUNT(*)
+        FROM jhi_authority
+      </sqlCheck>
+    </preConditions>
+    <sqlFile path="db/changelog/data/insert_jhi_authority.sql"/>
+  </changeSet>
+
+  <!-- Insert admin user -->
+  <changeSet author="cabs-app" failOnError="false" id="2" runOnChange="true">
+    <preConditions onFail="MARK_RAN">
+      <sqlCheck expectedResult="0">
+        SELECT COUNT(*)
+        FROM jhi_user
+      </sqlCheck>
+    </preConditions>
+    <sqlFile path="db/changelog/data/insert_jhi_user.sql"/>
+  </changeSet>
+
+  <!-- Insert admin user's authority -->
+  <changeSet author="cabs-app" failOnError="false" id="3" runOnChange="true">
+    <preConditions onFail="MARK_RAN">
+      <sqlCheck expectedResult="0">
+        SELECT COUNT(*)
+        FROM jhi_user_authority
+      </sqlCheck>
+    </preConditions>
+    <sqlFile path="db/changelog/data/insert_jhi_user_authority.sql"/>
+  </changeSet>
+
+</databaseChangeLog>

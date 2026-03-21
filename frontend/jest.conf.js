@@ -22,23 +22,23 @@ module.exports = {
     ['jest-junit', { outputDirectory: '<rootDir>/target/test-results/', outputName: 'TESTS-results-jest.xml' }],
     ['jest-sonar', { outputDirectory: './target/test-results/jest', outputName: 'TESTS-results-sonar.xml' }],
   ],
-  testMatch: ['<rootDir>/src/main/webapp/app/**/@(*.)@(spec.ts)'],
+  testMatch: ['<rootDir>/src/app/**/@(*.)@(spec.ts)'],
   testEnvironmentOptions: {
     url: 'https://jhipster.tech',
   },
   testPathIgnorePatterns: [
     // patient entity not used
-    '<rootDir>/src/main/webapp/app/entities/patient/list/patient.component.spec.ts',
-    '<rootDir>/src/main/webapp/app/entities/patient/delete/patient-delete-dialog.component.spec.ts',
-    '<rootDir>/src/main/webapp/app/entities/patient/detail/patient-detail.component.spec.ts',
-    '<rootDir>/src/main/webapp/app/entities/patient/route/patient-routing-resolve.service.spec.ts',
-    '<rootDir>/src/main/webapp/app/entities/patient/service/patient.service.spec.ts',
-    '<rootDir>/src/main/webapp/app/entities/patient/update/patient-update.component.spec.ts',
-    '<rootDir>/src/main/webapp/app/entities/patient/update/patient-form.service.spec.ts',
+    '<rootDir>/src/app/entities/patient/list/patient.component.spec.ts',
+    '<rootDir>/src/app/entities/patient/delete/patient-delete-dialog.component.spec.ts',
+    '<rootDir>/src/app/entities/patient/detail/patient-detail.component.spec.ts',
+    '<rootDir>/src/app/entities/patient/route/patient-routing-resolve.service.spec.ts',
+    '<rootDir>/src/app/entities/patient/service/patient.service.spec.ts',
+    '<rootDir>/src/app/entities/patient/update/patient-update.component.spec.ts',
+    '<rootDir>/src/app/entities/patient/update/patient-form.service.spec.ts',
     // page-ribbon not used
-    '<rootDir>/src/main/webapp/app/layouts/profiles/page-ribbon.component.spec.ts',
+    '<rootDir>/src/app/layouts/profiles/page-ribbon.component.spec.ts',
 
-    '<rootDir>/src/main/webapp/app/entities/appointment/update/appointment-form.service.spec.ts',
-    '<rootDir>/src/main/webapp/app/entities/appointment/detail/appointment-detail.component.spec.ts',
+    '<rootDir>/src/app/entities/appointment/update/appointment-form.service.spec.ts',
+    '<rootDir>/src/app/entities/appointment/detail/appointment-detail.component.spec.ts',
   ],
 };

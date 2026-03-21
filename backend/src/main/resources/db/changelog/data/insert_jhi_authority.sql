@@ -1,0 +1,1 @@
+insert into jhi_authority values ('ROLE_USER'),('ROLE_ADMIN');
