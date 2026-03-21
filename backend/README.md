@@ -74,3 +74,8 @@ npm run start
 
 Navigate to http://localhost:9000/ in your browser to access the app's frontend.
 
+Login to the app with the following credentials:
+```
+Username: admin
+Password: admin
+```
