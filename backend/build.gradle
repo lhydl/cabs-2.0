@@ -7,9 +7,8 @@ plugins {
     id "com.github.ben-manes.versions" version "0.53.0"
 }
 
-group = 'sg.gov.ica.cass'
+group = 'org.cabs'
 version = '0.0.1-SNAPSHOT'
-description = 'iams'
 
 java {
     toolchain {
@@ -28,35 +27,6 @@ configurations {
 
 repositories {
     mavenCentral()
-}
-
-// Configure the project layout
-sourceSets {
-    integrationtest { //declare new sourceSet before dependencies
-        java {
-            compileClasspath += sourceSets.main.output //production classes and resources
-            runtimeClasspath += sourceSets.main.output
-        }
-    }
-}
-
-// Adding a test suite to run the tests in a source set
-tasks.register('integrationtest', Test) {
-    //To ensure int test's system timezone
-    jvmArgs '-Duser.timezone=Asia/Singapore'
-
-    systemProperty 'spring.profiles.active', 'local, integration-test'
-
-    group = 'verification'
-    description = 'To run integration tests.'
-
-    useJUnitPlatform()
-    failFast = false
-    maxHeapSize = '2G'
-
-    testClassesDirs = sourceSets.integrationtest.output.classesDirs
-    classpath = sourceSets.integrationtest.runtimeClasspath
-    shouldRunAfter test
 }
 
 dependencies {
@@ -95,19 +65,8 @@ dependencies {
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
-    // To remove warning when running unit tests: "Mockito is currently self-attaching to enable the inline-mock-maker."
-    // On Java 21+ this “self-attaching” agent is still allowed but will be blocked by default in future JDKs
-    // run ./gradlew dependencies --configuration testRuntimeClasspath to check mockito version used in spring-boot-starter-test
-    mockitoAgent 'org.mockito:mockito-core:5.17.0'
-
-}
-
-tasks.named('test') {
-    useJUnitPlatform()
-    jvmArgs "-javaagent:${configurations.mockitoAgent.singleFile}"
 }
 
 bootWar {
-    archiveFileName.set("cass-iams.war")
+    archiveFileName.set("cabs.war")
 }
