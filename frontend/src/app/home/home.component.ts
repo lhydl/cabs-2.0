@@ -56,10 +56,10 @@ export default class HomeComponent implements OnInit, OnDestroy {
         if (this.account) {
           this.getTodaysAppointments();
           if (this.isUser) {
-            // Real-time queue update for users, polling every 5 seconds
+            // Real-time queue update for users, polling every 10 seconds
             this.updateAppointmentsIntervalId = setInterval(() => {
               this.getTodaysAppointments();
-            }, 5000);
+            }, 10000);
           }
         } else {
           if (this.updateAppointmentsIntervalId) {

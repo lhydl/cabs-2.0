@@ -12,3 +12,13 @@ function setupProxy({ tls }) {
 }
 
 module.exports = setupProxy;
+
+// module.exports = function setupProxy() {
+//   return {
+//     '/api': {
+//       target: 'http://localhost:8080',
+//       secure: false,
+//       changeOrigin: true
+//     },
+//   };
+// };
