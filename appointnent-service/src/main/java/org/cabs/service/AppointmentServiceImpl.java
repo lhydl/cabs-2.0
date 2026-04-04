@@ -1,13 +1,12 @@
-package org.cabs.service.impl;
+package org.cabs.service;
 
-import org.cabs.domain.Appointment;
+import java.util.List;
+import java.util.Optional;
+import org.cabs.entity.Appointment;
 import org.cabs.repository.AppointmentRepository;
 import org.cabs.repository.AppointmentRepository.PatientDetailsProjection;
 import org.cabs.repository.AppointmentRepository.PatientMappingsProjection;
 import org.cabs.repository.AppointmentRepositoryCustom;
-import org.cabs.service.AppointmentService;
-import java.util.List;
-import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -16,7 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service Implementation for managing {@link org.cabs.domain.Appointment}.
+ * Service Implementation for managing {@link org.cabs.entity.Appointment}.
  */
 @Service
 @Transactional
@@ -28,7 +27,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     private final AppointmentRepositoryCustom appointmentRepositoryCustom;
 
-    public AppointmentServiceImpl(AppointmentRepository appointmentRepository, AppointmentRepositoryCustom appointmentRepositoryCustom) {
+    public AppointmentServiceImpl(AppointmentRepository appointmentRepository,
+        AppointmentRepositoryCustom appointmentRepositoryCustom) {
         this.appointmentRepository = appointmentRepository;
         this.appointmentRepositoryCustom = appointmentRepositoryCustom;
     }
