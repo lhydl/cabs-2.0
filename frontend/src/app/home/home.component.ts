@@ -1,18 +1,17 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-
-import SharedModule from 'app/shared/shared.module';
-import { AccountService } from 'app/core/auth/account.service';
-import { Account } from 'app/core/auth/account.model';
-import { IAppointment } from 'app/entities/appointment/appointment.model';
 import { AppointmentService, EntityArrayResponseType } from 'app/entities/appointment/service/appointment.service';
-import dayjs from 'dayjs';
-import HasAnyAuthorityDirective from 'app/shared/auth/has-any-authority.directive';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
 
-import { MatDividerModule } from '@angular/material/divider';
+import { Account } from 'app/core/auth/account.model';
+import { AccountService } from 'app/core/auth/account.service';
+import HasAnyAuthorityDirective from 'app/shared/auth/has-any-authority.directive';
 import { HttpParams } from '@angular/common/http';
+import { IAppointment } from 'app/entities/appointment/appointment.model';
+import { MatDividerModule } from '@angular/material/divider';
+import SharedModule from 'app/shared/shared.module';
+import { Subject } from 'rxjs';
+import dayjs from 'dayjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   standalone: true,
@@ -122,5 +121,8 @@ export default class HomeComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    if (this.updateAppointmentsIntervalId) {
+      clearInterval(this.updateAppointmentsIntervalId);
+    }
   }
 }

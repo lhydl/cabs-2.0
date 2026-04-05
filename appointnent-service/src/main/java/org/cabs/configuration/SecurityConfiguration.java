@@ -28,6 +28,7 @@ public class SecurityConfiguration {
             .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/authenticate").permitAll()
+                .requestMatchers("/error").permitAll()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
@@ -35,23 +36,6 @@ public class SecurityConfiguration {
         return http.build();
     }
 
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//
-//        http
-//            .csrf(csrf -> csrf.disable())
-//            .formLogin(form -> form.disable())
-//            .httpBasic(basic -> basic.disable())
-//            .sessionManagement(session ->
-//                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//            )
-//            .authorizeHttpRequests(auth -> auth
-//                .requestMatchers("/api/authenticate").permitAll()
-//                .anyRequest().authenticated()
-//            );
-//
-//        return http.build();
-//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

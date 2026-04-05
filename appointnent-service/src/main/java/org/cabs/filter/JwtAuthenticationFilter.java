@@ -15,13 +15,12 @@ import java.util.List;
 import javax.crypto.SecretKey;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.filters.AddDefaultCharsetFilter.ResponseWrapper;
+import org.cabs.configuration.JwtConfig;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.cabs.configuration.JwtConfig;
 
 @Component
 @Slf4j
@@ -54,7 +53,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
@@ -66,10 +64,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 .getPayload();
 
             String username = claims.getSubject();
-            List<String> authorities = (List<String>) claims.get("authorities");
+//            log.info("Username {}", username);
+            String auth = (String) claims.get("auth");
+//            log.info("Auth {}", auth);
+            List<SimpleGrantedAuthority> grantedAuthorities =
+                auth != null
+                    ? List.of(new SimpleGrantedAuthority(auth))
+                    : List.of();
             if (username != null && !username.isEmpty()) {
-                return new UsernamePasswordAuthenticationToken(username, null,
-                    authorities.stream().map(SimpleGrantedAuthority::new).toList());
+                return new UsernamePasswordAuthenticationToken(
+                    username,
+                    null,
+                    grantedAuthorities
+                );
             }
         }
         return null;
