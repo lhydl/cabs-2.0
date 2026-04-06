@@ -1,13 +1,16 @@
 package org.cabs.exception;
 
+import java.io.Serial;
 import java.net.URI;
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.ErrorResponseException;
 
-@SuppressWarnings("java:S110")
+@Getter
 public class BadRequestAlertException extends ErrorResponseException {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private final String entityName;
@@ -32,22 +35,10 @@ public class BadRequestAlertException extends ErrorResponseException {
         problemDetail.setType(type);
         problemDetail.setTitle(defaultMessage);
 
-        // Custom properties (same as JHipster behavior)
         problemDetail.setProperty("message", "error." + errorKey);
         problemDetail.setProperty("params", entityName);
 
         return problemDetail;
     }
 
-    public String getEntityName() {
-        return entityName;
-    }
-
-    public String getErrorKey() {
-        return errorKey;
-    }
-
-    public ProblemDetail getProblemDetail() {
-        return (ProblemDetail) this.getBody();
-    }
 }

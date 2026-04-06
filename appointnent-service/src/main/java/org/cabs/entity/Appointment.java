@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.ZonedDateTime;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,7 +34,7 @@ public class Appointment implements Serializable {
 
     @NotNull
     @Column(name = "appt_datetime", nullable = false)
-    private ZonedDateTime apptDatetime;
+    private Instant apptDatetime;
 
     @Size(max = 200)
     @Column(name = "remarks", length = 200)
@@ -49,40 +50,6 @@ public class Appointment implements Serializable {
     @Column(name = "status", nullable = true)
     private Integer status = 0;
 
-    public Appointment id(Long id) {
-        this.setId(id);
-        return this;
-    }
-
-    public Appointment apptType(String apptType) {
-        this.setApptType(apptType);
-        return this;
-    }
-
-    public Appointment apptDatetime(ZonedDateTime apptDatetime) {
-        this.setApptDatetime(apptDatetime);
-        return this;
-    }
-
-    public Appointment remarks(String remarks) {
-        this.setRemarks(remarks);
-        return this;
-    }
-
-    public Appointment patientId(Integer patientId) {
-        this.setPatientId(patientId);
-        return this;
-    }
-
-    public Appointment doctorId(Integer doctorId) {
-        this.setDoctorId(doctorId);
-        return this;
-    }
-
-    public Appointment status(Integer status) {
-        this.setStatus(status);
-        return this;
-    }
 
     @Override
     public boolean equals(Object o) {

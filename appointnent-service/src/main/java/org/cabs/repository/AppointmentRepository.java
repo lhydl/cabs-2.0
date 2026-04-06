@@ -2,7 +2,9 @@ package org.cabs.repository;
 
 import java.util.List;
 import org.cabs.entity.Appointment;
-import org.springframework.data.jpa.repository.*;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -29,12 +31,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
         + "     A.patient_id = :userId ", nativeQuery = true)
     void deleteUserAppointments(@Param("userId") Integer userId);
 
-    // @Query(
-    //     "SELECT new cabs.service.dto.PatientDetailsDTO(u.firstName, u.lastName, u.email, u.phoneNumber) FROM User u WHERE u.id = :userId"
-    // )
-    // PatientDetailsDTO getPatientDetails(@Param("userId") Long userId);
-
-    public interface PatientDetailsProjection {
+    interface PatientDetailsProjection {
 
         String getLogin();
 
@@ -57,7 +54,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     )
     PatientDetailsProjection getPatientDetails(@Param("userId") Long userId);
 
-    public interface PatientMappingsProjection {
+    interface PatientMappingsProjection {
 
         String getLogin();
 

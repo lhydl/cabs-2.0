@@ -4,7 +4,6 @@ import org.cabs.config.Constants;
 import org.cabs.domain.Authority;
 import org.cabs.domain.User;
 import org.cabs.repository.AuthorityRepository;
-import org.cabs.repository.PatientRepository;
 import org.cabs.repository.UserRepository;
 import org.cabs.security.AuthoritiesConstants;
 import org.cabs.security.SecurityUtils;
@@ -46,8 +45,7 @@ public class UserService {
         UserRepository userRepository,
         PasswordEncoder passwordEncoder,
         AuthorityRepository authorityRepository,
-        CacheManager cacheManager,
-        PatientRepository patientRepository
+        CacheManager cacheManager
     ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;

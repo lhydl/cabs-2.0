@@ -1,6 +1,7 @@
 package org.cabs.dto;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import lombok.Getter;
@@ -15,7 +16,7 @@ public class AppointmentDTO implements Serializable {
 
     private Long id;
     private String apptType;
-    private ZonedDateTime apptDatetime;
+    private Instant apptDatetime;
     private String remarks;
     private Integer patientId;
     private Integer doctorId;

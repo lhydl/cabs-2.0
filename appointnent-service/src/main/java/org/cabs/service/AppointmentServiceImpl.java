@@ -64,10 +64,6 @@ public class AppointmentServiceImpl implements AppointmentService {
                 if (appointment.getPatientId() != null) {
                     existingAppointment.setPatientId(appointment.getPatientId());
                 }
-                // if (appointment.getDoctorId() != null) {
-                //     existingAppointment.setDoctorId(appointment.getDoctorId());
-                // }
-
                 return existingAppointment;
             })
             .map(appointmentRepository::save);

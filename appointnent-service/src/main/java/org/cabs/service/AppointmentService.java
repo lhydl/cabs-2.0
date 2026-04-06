@@ -60,17 +60,17 @@ public interface AppointmentService {
      */
     void delete(Long id);
 
-    public List<Appointment> getUserAppt(String userId, String predicate, String sort);
+    List<Appointment> getUserAppt(String userId, String predicate, String sort);
 
-    public List<String> getExistingTimeSlots(String selectedDate);
+    List<String> getExistingTimeSlots(String selectedDate);
 
     void deleteUserAppointments(Integer userId);
 
-    public PatientDetailsProjection getPatientDetails(Long userId);
+    PatientDetailsProjection getPatientDetails(Long userId);
 
-    public List<PatientMappingsProjection> getPatientMappings();
+    List<PatientMappingsProjection> getPatientMappings();
 
-    public List<Appointment> getTodaysAppointments();
+    List<Appointment> getTodaysAppointments();
 
-    public Integer updateApptStatus(Integer id, Integer status);
+    Integer updateApptStatus(Integer id, Integer status);
 }
