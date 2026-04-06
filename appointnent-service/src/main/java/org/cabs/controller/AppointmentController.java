@@ -21,6 +21,7 @@ import org.cabs.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -244,6 +245,13 @@ public class AppointmentController {
         return appointmentService.updateApptStatus(id, status);
     }
 
+    @GetMapping("/health")
+    public ResponseEntity<String> healthCheck(Pageable pageable) {
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body("Service is up and running");
+    }
+
     // ========================= HELPER =========================
     private HttpHeaders createAlert(String message, String param) {
         HttpHeaders headers = new HttpHeaders();
@@ -251,4 +259,5 @@ public class AppointmentController {
         headers.add("X-" + ENTITY_NAME + "-params", param);
         return headers;
     }
+
 }

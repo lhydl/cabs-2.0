@@ -20,6 +20,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/cabs/**").permitAll()
                 .requestMatchers("/appt/**").permitAll()
+                .requestMatchers("/error").permitAll()
                 .anyRequest().authenticated()
             );
         return http.build();
