@@ -31,7 +31,7 @@ export class AppointmentService {
   constructor(
     protected http: HttpClient,
     protected applicationConfigService: ApplicationConfigService,
-  ) {}
+  ) { }
 
   create(appointment: NewAppointment): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(appointment);
@@ -103,6 +103,12 @@ export class AppointmentService {
 
   updateApptStatus(params: HttpParams): Observable<number> {
     return this.http.post<number>(`${this.resourceUrl}/updateApptStatus`, null, { params });
+  }
+
+  getHealth(): Observable<string> {
+    return this.http.get(`${this.resourceUrl}/health`, {
+      responseType: 'text',
+    });
   }
 
   addAppointmentToCollectionIfMissing<Type extends Pick<IAppointment, 'id'>>(

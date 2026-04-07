@@ -246,7 +246,7 @@ public class AppointmentController {
     }
 
     @GetMapping("/health")
-    public ResponseEntity<String> healthCheck(Pageable pageable) {
+    public ResponseEntity<String> healthCheck() {
         return ResponseEntity
             .status(HttpStatus.OK)
             .body("Service is up and running");

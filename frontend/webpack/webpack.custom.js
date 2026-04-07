@@ -41,11 +41,12 @@ module.exports = async (config, options, targetOptions) => {
           host: 'localhost',
           port: 9000,
           https: tls,
+          open: false,
           proxy: {
             target: `http${tls ? 's' : ''}://localhost:${targetOptions.target === 'serve' ? '4200' : '8080'}`,
             ws: true,
             proxyOptions: {
-              changeOrigin: false, //pass the Host header to the backend unchanged  https://github.com/Browsersync/browser-sync/issues/430
+              changeOrigin: false, //pass the Host header to the backend unchanged
             },
           },
           socket: {
@@ -53,14 +54,12 @@ module.exports = async (config, options, targetOptions) => {
               heartbeatTimeout: 60000,
             },
           },
-          /*
-          ghostMode: { // uncomment this part to disable BrowserSync ghostMode; https://github.com/jhipster/generator-jhipster/issues/11116
+          ghostMode: { // uncomment this part to disable BrowserSync ghostMode;
             clicks: false,
             location: false,
             forms: false,
             scroll: false,
           },
-          */
         },
         {
           reload: targetOptions.target === 'build', // enabled for build --watch
