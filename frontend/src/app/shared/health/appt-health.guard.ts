@@ -1,28 +1,31 @@
-import { HttpErrorResponse } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { CanActivate, Router } from "@angular/router";
-import { AppointmentService } from "app/entities/appointment/service/appointment.service";
-import { catchError, map, Observable, of } from "rxjs";
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
+import { Observable, catchError, map, of } from 'rxjs';
+
+import { AppointmentService } from 'app/entities/appointment/service/appointment.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApptHealthGuard implements CanActivate {
+  constructor(
+    private appointmentService: AppointmentService,
+    private router: Router,
+  ) {}
 
-    constructor(
-        private appointmentService: AppointmentService,
-        private router: Router
-    ) { }
-
-    canActivate(): Observable<boolean> {
-        return this.appointmentService.getHealth().pipe(
-            map(() => true), // service is healthy
-            catchError((err: HttpErrorResponse) => {
-                if (err.status === 503) {
-                    this.router.navigate(['/service-unavailable'], { replaceUrl: true });
-                }
-                return of(false);
-            })
-        );
-    }
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+    return this.appointmentService.getHealth().pipe(
+      map(() => true),
+      catchError((err: HttpErrorResponse) => {
+        if (err.status === 503) {
+          this.router.navigate(['/service-unavailable'], {
+            queryParams: { returnUrl: state.url },
+            replaceUrl: true,
+          });
+        }
+        return of(false);
+      }),
+    );
+  }
 }
