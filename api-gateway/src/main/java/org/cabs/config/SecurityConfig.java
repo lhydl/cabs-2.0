@@ -20,6 +20,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/cabs/**").permitAll()
                 .requestMatchers("/appt/**").permitAll()
+                .requestMatchers("/queue/**").permitAll()
                 .requestMatchers("/error").permitAll()
                 .anyRequest().authenticated()
             );

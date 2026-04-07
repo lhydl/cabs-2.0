@@ -69,8 +69,4 @@ public interface AppointmentService {
     PatientDetailsProjection getPatientDetails(Long userId);
 
     List<PatientMappingsProjection> getPatientMappings();
-
-    List<Appointment> getTodaysAppointments();
-
-    Integer updateApptStatus(Integer id, Integer status);
 }

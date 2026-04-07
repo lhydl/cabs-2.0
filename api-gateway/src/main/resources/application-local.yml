@@ -24,3 +24,9 @@ spring:
                 - Path=/appt/**
               filters:
                 - StripPrefix=2
+            - id: cabs-queue-route
+              uri: http://localhost:8084
+              predicates:
+                - Path=/queue/**
+              filters:
+                - StripPrefix=2

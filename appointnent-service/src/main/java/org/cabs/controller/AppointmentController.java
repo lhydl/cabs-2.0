@@ -232,19 +232,6 @@ public class AppointmentController {
         return appointmentService.getPatientMappings();
     }
 
-    @GetMapping("/getTodayAppt")
-    public List<Appointment> getTodaysAppointments() {
-        return appointmentService.getTodaysAppointments();
-    }
-
-    @PostMapping("/updateApptStatus")
-    public Integer updateApptStatus(
-        @RequestParam("id") Integer id,
-        @RequestParam("status") Integer status
-    ) {
-        return appointmentService.updateApptStatus(id, status);
-    }
-
     @GetMapping("/health")
     public ResponseEntity<String> healthCheck() {
         return ResponseEntity

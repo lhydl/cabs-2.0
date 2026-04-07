@@ -8,6 +8,7 @@ import HasAnyAuthorityDirective from 'app/shared/auth/has-any-authority.directiv
 import { HttpParams } from '@angular/common/http';
 import { IAppointment } from 'app/entities/appointment/appointment.model';
 import { MatDividerModule } from '@angular/material/divider';
+import { QueueService } from 'app/queue/queue.service';
 import SharedModule from 'app/shared/shared.module';
 import { Subject } from 'rxjs';
 import dayjs from 'dayjs';
@@ -38,7 +39,7 @@ export default class HomeComponent implements OnInit, OnDestroy {
 
   constructor(
     private accountService: AccountService,
-    protected appointmentService: AppointmentService,
+    private queueService: QueueService,
     private router: Router,
   ) {}
 
@@ -73,7 +74,7 @@ export default class HomeComponent implements OnInit, OnDestroy {
   }
 
   getTodaysAppointments(): void {
-    this.appointmentService.getTodaysAppointments().subscribe((res: any) => {
+    this.queueService.getTodaysAppointmentsAndQueue().subscribe((res: any) => {
       /* using appt id as q number */
       this.appointments = res;
       if (this.appointments) {
@@ -111,7 +112,7 @@ export default class HomeComponent implements OnInit, OnDestroy {
     if (this.currentAppointment !== undefined) {
       params = new HttpParams().set('id', this.currentAppointment.id).set('status', status);
     }
-    this.appointmentService.updateApptStatus(params).subscribe((res: any) => {
+    this.queueService.updateQueueStatus(params).subscribe((res: any) => {
       if (res) {
         this.getTodaysAppointments();
       }

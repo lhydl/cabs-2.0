@@ -115,13 +115,4 @@ public class AppointmentServiceImpl implements AppointmentService {
         return appointmentRepository.getPatientMappings();
     }
 
-    @Override
-    public List<Appointment> getTodaysAppointments() {
-        return appointmentRepositoryCustom.getTodaysAppointments();
-    }
-
-    @Override
-    public Integer updateApptStatus(Integer id, Integer status) {
-        return appointmentRepositoryCustom.updateApptStatus(id, status);
-    }
 }
