@@ -1,18 +1,18 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-
-import SharedModule from 'app/shared/shared.module';
-import { AccountService } from 'app/core/auth/account.service';
-import { Account } from 'app/core/auth/account.model';
-import { IAppointment } from 'app/entities/appointment/appointment.model';
 import { AppointmentService, EntityArrayResponseType } from 'app/entities/appointment/service/appointment.service';
-import dayjs from 'dayjs';
-import HasAnyAuthorityDirective from 'app/shared/auth/has-any-authority.directive';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
 
+import { Account } from 'app/core/auth/account.model';
+import { AccountService } from 'app/core/auth/account.service';
+import HasAnyAuthorityDirective from 'app/shared/auth/has-any-authority.directive';
+import { HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { IAppointment } from 'app/entities/appointment/appointment.model';
 import { MatDividerModule } from '@angular/material/divider';
-import { HttpParams } from '@angular/common/http';
+import { QueueService } from 'app/queue/queue.service';
+import SharedModule from 'app/shared/shared.module';
+import { Subject } from 'rxjs';
+import dayjs from 'dayjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   standalone: true,
@@ -34,17 +34,19 @@ export default class HomeComponent implements OnInit, OnDestroy {
   today = dayjs().format('DD MMM YYYY');
   userQueueNum?: number;
   updateAppointmentsIntervalId: any;
+  isQueueServiceUp: boolean = true;
 
   private readonly destroy$ = new Subject<void>();
 
   constructor(
     private accountService: AccountService,
-    protected appointmentService: AppointmentService,
+    private queueService: QueueService,
     private router: Router,
   ) {}
 
   // NOTE: USE *jhiHasAnyAuthority in HTML! I'VE REMOVED USER ROLE FOR admin
   ngOnInit(): void {
+    this.checkQueueServiceHealth();
     this.accountService
       .getAuthenticationState()
       .pipe(takeUntil(this.destroy$))
@@ -74,35 +76,44 @@ export default class HomeComponent implements OnInit, OnDestroy {
   }
 
   getTodaysAppointments(): void {
-    this.appointmentService.getTodaysAppointments().subscribe((res: any) => {
-      /* using appt id as q number */
-      this.appointments = res;
-      if (this.appointments) {
-        if (!this.isAdmin) {
-          this.userTodaysAppointments = this.appointments.filter(appointment => appointment.patientId === this.account?.id);
+    this.queueService.getTodaysAppointmentsAndQueue().subscribe({
+      next: res => {
+        this.isQueueServiceUp = true;
+        /* using appt id as q number */
+        this.appointments = res;
+        if (this.appointments) {
+          if (!this.isAdmin) {
+            this.userTodaysAppointments = this.appointments.filter(appointment => appointment.patientId === this.account?.id);
 
-          // Format and save datetimeString for each appointment
-          this.userTodaysAppointments.forEach(appointment => {
-            if (appointment.apptDatetime) {
-              appointment.datetimeString = dayjs(appointment.apptDatetime).format('HH:mm a');
-            } else {
-              appointment.datetimeString = null;
+            // Format and save datetimeString for each appointment
+            this.userTodaysAppointments.forEach(appointment => {
+              if (appointment.apptDatetime) {
+                appointment.datetimeString = dayjs(appointment.apptDatetime).format('HH:mm a');
+              } else {
+                appointment.datetimeString = null;
+              }
+            });
+
+            this.userQueueNum = this.userTodaysAppointments[0]?.id;
+            if (this.userTodaysAppointments.length > 0) {
+              this.numPeopleInFront = this.appointments.findIndex(obj => obj.id === this.userQueueNum);
             }
-          });
-
-          this.userQueueNum = this.userTodaysAppointments[0]?.id;
-          if (this.userTodaysAppointments.length > 0) {
-            this.numPeopleInFront = this.appointments.findIndex(obj => obj.id === this.userQueueNum);
           }
-        }
-        if (this.appointments.length > 0) {
-          this.currentAppointment = this.appointments[0];
-          if (this.appointments.length > 1) {
-            this.nextAppointment = this.appointments[1];
+          if (this.appointments.length > 0) {
+            this.currentAppointment = this.appointments[0];
+            if (this.appointments.length > 1) {
+              this.nextAppointment = this.appointments[1];
+            }
           }
+          this.lastUpdatedTime = dayjs().format('DD/MM/YYYY HH:mm:ss');
         }
-        this.lastUpdatedTime = dayjs().format('DD/MM/YYYY HH:mm:ss');
-      }
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error('Health check failed:', err);
+        if (err.status === 503) {
+          this.isQueueServiceUp = false;
+        }
+      },
     });
   }
 
@@ -112,15 +123,40 @@ export default class HomeComponent implements OnInit, OnDestroy {
     if (this.currentAppointment !== undefined) {
       params = new HttpParams().set('id', this.currentAppointment.id).set('status', status);
     }
-    this.appointmentService.updateApptStatus(params).subscribe((res: any) => {
-      if (res) {
+    this.queueService.updateQueueStatus(params).subscribe({
+      next: res => {
+        this.isQueueServiceUp = true;
         this.getTodaysAppointments();
-      }
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error('Health check failed:', err);
+        if (err.status === 503) {
+          this.isQueueServiceUp = false;
+        }
+      },
+    });
+  }
+
+  checkQueueServiceHealth(): void {
+    this.queueService.getHealth().subscribe({
+      next: res => {
+        console.log('Queue service healthy:', res);
+        this.isQueueServiceUp = true;
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error('Health check failed:', err);
+        if (err.status === 503 || err.status === 504) {
+          this.isQueueServiceUp = false;
+        }
+      },
     });
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    if (this.updateAppointmentsIntervalId) {
+      clearInterval(this.updateAppointmentsIntervalId);
+    }
   }
 }

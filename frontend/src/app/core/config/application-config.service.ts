@@ -20,10 +20,11 @@ export class ApplicationConfigService {
   }
 
   getEndpointFor(api: string, microservice?: string): string {
-    this.setEndpointPrefix('/api-gateway/cabs/')
     if (microservice) {
-      return `${this.endpointPrefix}services/${microservice}/${api}`;
+      this.setEndpointPrefix('/api-gateway/');
+      return `${this.endpointPrefix}${microservice}/${api}`;
     }
+    this.setEndpointPrefix('/api-gateway/cabs/');
     return `${this.endpointPrefix}${api}`;
   }
 }

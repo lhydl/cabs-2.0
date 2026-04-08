@@ -1,0 +1,75 @@
+plugins {
+    id 'java'
+//    id 'war'
+    id 'org.springframework.boot' version '3.5.10'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id "com.github.ben-manes.versions" version "0.53.0"
+}
+
+group = 'org.cabs'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    mockitoAgent {
+        transitive = false
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:4.0.4'
+    implementation 'io.jsonwebtoken:jjwt:0.13.0'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'net.javacrumbs.shedlock:shedlock-provider-jdbc-template:6.10.0'
+    implementation 'net.javacrumbs.shedlock:shedlock-spring:6.10.0'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    implementation 'org.liquibase:liquibase-core:5.0.1'
+    implementation "tech.jhipster:jhipster-framework:8.5.0"
+    implementation "org.springframework.boot:spring-boot-starter-cache"
+    implementation "org.ehcache:ehcache"
+    implementation "org.hibernate.orm:hibernate-jcache"
+    implementation "javax.cache:cache-api:1.1.1"
+    implementation "com.fasterxml.jackson.datatype:jackson-datatype-hibernate6"
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0"
+    implementation "org.mapstruct:mapstruct:1.5.5.Final"
+    annotationProcessor "org.mapstruct:mapstruct-processor:1.5.5.Final"
+    implementation 'com.nimbusds:nimbus-jose-jwt:10.0.2'
+    implementation "org.springframework.boot:spring-boot-starter-oauth2-resource-server"
+    implementation "org.springframework.boot:spring-boot-starter-mail"
+    implementation "org.springframework.boot:spring-boot-starter-thymeleaf"
+
+//    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+//bootWar {
+//    archiveFileName.set("cabs.war")
+//}
+
+bootJar {
+    archiveFileName.set("cabs.jar")
+}

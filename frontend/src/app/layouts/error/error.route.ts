@@ -1,8 +1,13 @@
-import { Routes } from '@angular/router';
-
 import ErrorComponent from './error.component';
+import { Routes } from '@angular/router';
+import { ServiceUnavailableComponent } from 'app/service-unavailable/service-unavailable.component';
 
 export const errorRoute: Routes = [
+  {
+    path: 'service-unavailable',
+    component: ServiceUnavailableComponent,
+    title: 'Service Unavailable',
+  },
   {
     path: 'error',
     component: ErrorComponent,

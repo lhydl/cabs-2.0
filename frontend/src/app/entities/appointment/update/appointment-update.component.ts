@@ -1,26 +1,23 @@
-import { Component, OnInit } from '@angular/core';
 import { HttpParams, HttpResponse } from '@angular/common/http';
-import { ActivatedRoute } from '@angular/router';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import SharedModule from 'app/shared/shared.module';
-import { FormBuilder, FormsModule, ReactiveFormsModule, UntypedFormGroup, Validators } from '@angular/forms';
 
-import { IAppointment } from '../appointment.model';
-import { AppointmentService } from '../service/appointment.service';
-import { AppointmentFormService, AppointmentFormGroup } from './appointment-form.service';
-import { faAnglesDown, faMillSign } from '@fortawesome/free-solid-svg-icons';
-import HasAnyAuthorityDirective from 'app/shared/auth/has-any-authority.directive';
-import { AccountService } from 'app/core/auth/account.service';
-import { Account } from 'app/core/auth/account.model';
+import { DatePipe } from '@angular/common';
 import { UserManagementService } from 'app/admin/user-management/service/user-management.service';
 import { User } from 'app/admin/user-management/user-management.model';
-import { DATE_FORMAT, TIME_FORMAT } from 'app/config/input.constants';
-import dayjs, { Dayjs } from 'dayjs/esm';
+import { Account } from 'app/core/auth/account.model';
+import { AccountService } from 'app/core/auth/account.service';
+import HasAnyAuthorityDirective from 'app/shared/auth/has-any-authority.directive';
 import { addMinutes, format } from 'date-fns';
-import { DatePipe } from '@angular/common';
+import dayjs from 'dayjs/esm';
+import { IAppointment } from '../appointment.model';
+import { AppointmentService } from '../service/appointment.service';
+import { AppointmentFormGroup, AppointmentFormService } from './appointment-form.service';
 
 @Component({
   standalone: true,
@@ -61,7 +58,7 @@ export class AppointmentUpdateComponent implements OnInit {
     private accountService: AccountService,
     private userService: UserManagementService,
     private datePipe: DatePipe,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.accountService

@@ -1,26 +1,25 @@
-import { Component, OnInit } from '@angular/core';
 import { HttpHeaders, HttpParams } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Data, ParamMap, Router, RouterModule } from '@angular/router';
-import { combineLatest, filter, Observable, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { combineLatest, filter, Observable, Subject, switchMap, takeUntil, tap } from 'rxjs';
 
-import SharedModule from 'app/shared/shared.module';
-import { SortDirective, SortByDirective } from 'app/shared/sort';
-import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'app/shared/date';
-import { ItemCountComponent } from 'app/shared/pagination';
 import { FormBuilder, FormsModule, UntypedFormGroup } from '@angular/forms';
 import { MatChipsModule } from '@angular/material/chips';
+import { DurationPipe, FormatMediumDatePipe, FormatMediumDatetimePipe } from 'app/shared/date';
+import { ItemCountComponent } from 'app/shared/pagination';
+import SharedModule from 'app/shared/shared.module';
+import { SortByDirective, SortDirective } from 'app/shared/sort';
 
+import { ASC, DEFAULT_SORT_DATA, DESC, ITEM_DELETED_EVENT, SORT } from 'app/config/navigation.constants';
 import { ALL_ITEMS, ITEMS_PER_PAGE, PAGE_HEADER, TOTAL_COUNT_RESPONSE_HEADER } from 'app/config/pagination.constants';
-import { ASC, DESC, SORT, ITEM_DELETED_EVENT, DEFAULT_SORT_DATA } from 'app/config/navigation.constants';
-import { IAppointment, PatientMappingsDTO } from '../appointment.model';
-import { EntityArrayResponseType, AppointmentService } from '../service/appointment.service';
-import { AppointmentDeleteDialogComponent } from '../delete/appointment-delete-dialog.component';
-import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
+import { AccountService } from 'app/core/auth/account.service';
 import HasAnyAuthorityDirective from 'app/shared/auth/has-any-authority.directive';
 import dayjs from 'dayjs/esm';
-import { Dayjs } from 'dayjs';
+import { IAppointment, PatientMappingsDTO } from '../appointment.model';
+import { AppointmentDeleteDialogComponent } from '../delete/appointment-delete-dialog.component';
+import { AppointmentService, EntityArrayResponseType } from '../service/appointment.service';
 
 @Component({
   standalone: true,
@@ -77,7 +76,7 @@ export class AppointmentComponent implements OnInit {
     protected modalService: NgbModal,
     private accountService: AccountService,
     private fb: FormBuilder,
-  ) {}
+  ) { }
 
   trackId = (_index: number, item: IAppointment): number => this.appointmentService.getAppointmentIdentifier(item);
 
@@ -335,4 +334,5 @@ export class AppointmentComponent implements OnInit {
       return [predicate + ',' + ascendingQueryParam];
     }
   }
+
 }

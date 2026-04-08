@@ -1,13 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 
-import SharedModule from 'app/shared/shared.module';
-import { DurationPipe, FormatMediumDatetimePipe, FormatMediumDatePipe } from 'app/shared/date';
-import { IAppointment, PatientDetailsDTO } from '../appointment.model';
 import { HttpParams } from '@angular/common/http';
-import { IUser, User } from 'app/entities/user/user.model';
-import { AppointmentService } from '../service/appointment.service';
+import { DurationPipe, FormatMediumDatePipe, FormatMediumDatetimePipe } from 'app/shared/date';
+import SharedModule from 'app/shared/shared.module';
 import dayjs from 'dayjs';
+import { IAppointment, PatientDetailsDTO } from '../appointment.model';
+import { AppointmentService } from '../service/appointment.service';
 
 @Component({
   standalone: true,
@@ -23,7 +22,7 @@ export class AppointmentDetailComponent {
   constructor(
     protected activatedRoute: ActivatedRoute,
     protected appointmentService: AppointmentService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getPatientDetails();

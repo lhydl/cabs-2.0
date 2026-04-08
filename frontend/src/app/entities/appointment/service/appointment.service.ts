@@ -1,15 +1,13 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
-
-import { map } from 'rxjs/operators';
-
-import dayjs from 'dayjs/esm';
-
-import { isPresent } from 'app/core/util/operators';
-import { ApplicationConfigService } from 'app/core/config/application-config.service';
-import { createRequestOption } from 'app/core/request/request-util';
 import { IAppointment, NewAppointment, PatientDetailsDTO, PatientMappingsDTO } from '../appointment.model';
+
+import { ApplicationConfigService } from 'app/core/config/application-config.service';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { createRequestOption } from 'app/core/request/request-util';
+import dayjs from 'dayjs/esm';
+import { isPresent } from 'app/core/util/operators';
+import { map } from 'rxjs/operators';
 
 export type PartialUpdateAppointment = Partial<IAppointment> & Pick<IAppointment, 'id'>;
 
@@ -28,12 +26,12 @@ export type EntityArrayResponseType = HttpResponse<IAppointment[]>;
 
 @Injectable({ providedIn: 'root' })
 export class AppointmentService {
-  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/appointments');
+  protected resourceUrl = this.applicationConfigService.getEndpointFor('api/appointments', 'appt');
 
   constructor(
     protected http: HttpClient,
     protected applicationConfigService: ApplicationConfigService,
-  ) {}
+  ) { }
 
   create(appointment: NewAppointment): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(appointment);
@@ -105,6 +103,12 @@ export class AppointmentService {
 
   updateApptStatus(params: HttpParams): Observable<number> {
     return this.http.post<number>(`${this.resourceUrl}/updateApptStatus`, null, { params });
+  }
+
+  getHealth(): Observable<string> {
+    return this.http.get(`${this.resourceUrl}/health`, {
+      responseType: 'text',
+    });
   }
 
   addAppointmentToCollectionIfMissing<Type extends Pick<IAppointment, 'id'>>(

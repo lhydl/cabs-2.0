@@ -1,0 +1,34 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api-gateway
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      server:
+        webmvc:
+          routes:
+            - id: cabs-route
+              uri: http://core-service:8082
+              predicates:
+                - Path=/cabs/**
+              filters:
+                - StripPrefix=2
+
+            - id: cabs-appt-route
+              uri: http://appointment-service:8083
+              predicates:
+                - Path=/appt/**
+              filters:
+                - StripPrefix=2
+
+            - id: cabs-queue-route
+              uri: http://queue-service:8084
+              predicates:
+                - Path=/queue/**
+              filters:
+                - StripPrefix=2

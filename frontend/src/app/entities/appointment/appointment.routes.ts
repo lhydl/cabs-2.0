@@ -1,11 +1,11 @@
-import { Routes } from '@angular/router';
-
-import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
 import { ASC } from 'app/config/navigation.constants';
 import { AppointmentComponent } from './list/appointment.component';
 import { AppointmentDetailComponent } from './detail/appointment-detail.component';
-import { AppointmentUpdateComponent } from './update/appointment-update.component';
 import AppointmentResolve from './route/appointment-routing-resolve.service';
+import { AppointmentUpdateComponent } from './update/appointment-update.component';
+import { Routes } from '@angular/router';
+import { UserRouteAccessService } from 'app/core/auth/user-route-access.service';
+import { ApptHealthGuard } from 'app/shared/health/appt-health.guard';
 
 const appointmentRoute: Routes = [
   {
@@ -14,7 +14,7 @@ const appointmentRoute: Routes = [
     data: {
       defaultSort: 'id,' + ASC,
     },
-    canActivate: [UserRouteAccessService],
+    canActivate: [UserRouteAccessService, ApptHealthGuard],
   },
   {
     path: ':id/view',
@@ -22,7 +22,7 @@ const appointmentRoute: Routes = [
     resolve: {
       appointment: AppointmentResolve,
     },
-    canActivate: [UserRouteAccessService],
+    canActivate: [UserRouteAccessService, ApptHealthGuard],
   },
   {
     path: 'new',
@@ -30,7 +30,7 @@ const appointmentRoute: Routes = [
     resolve: {
       appointment: AppointmentResolve,
     },
-    canActivate: [UserRouteAccessService],
+    canActivate: [UserRouteAccessService, ApptHealthGuard],
   },
   {
     path: ':id/edit',
@@ -38,7 +38,7 @@ const appointmentRoute: Routes = [
     resolve: {
       appointment: AppointmentResolve,
     },
-    canActivate: [UserRouteAccessService],
+    canActivate: [UserRouteAccessService, ApptHealthGuard],
   },
 ];
 
