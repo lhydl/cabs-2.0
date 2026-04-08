@@ -145,7 +145,7 @@ export default class HomeComponent implements OnInit, OnDestroy {
       },
       error: (err: HttpErrorResponse) => {
         console.error('Health check failed:', err);
-        if (err.status === 503) {
+        if (err.status === 503 || err.status === 504) {
           this.isQueueServiceUp = false;
         }
       },

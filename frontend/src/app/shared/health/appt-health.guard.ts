@@ -18,7 +18,7 @@ export class ApptHealthGuard implements CanActivate {
     return this.appointmentService.getHealth().pipe(
       map(() => true),
       catchError((err: HttpErrorResponse) => {
-        if (err.status === 503) {
+        if (err.status === 503 || err.status === 504) {
           this.router.navigate(['/service-unavailable'], {
             queryParams: { returnUrl: state.url },
             replaceUrl: true,
