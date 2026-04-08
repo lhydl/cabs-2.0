@@ -215,3 +215,42 @@ button:hover {
   margin: 10px;
   font-size: medium;
 }
+
+.service-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  text-align: center;
+  padding: 40px;
+  border-radius: 16px;
+  background: white;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+}
+
+.icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.btn {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.2s ease;
+}
+
+.btn.primary {
+  background-color: #007bff;
+  color: white;
+  height: auto;
+}
+
+.btn.primary:hover {
+  background-color: #0056b3;
+}

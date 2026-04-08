@@ -1,10 +1,6 @@
 <div class="row">
   @if (account !== null) {
-    @if (account) {
-      <!-- <div class="col-md-2">
-        <span class="hipster img-fluid rounded"></span>
-      </div> -->
-    }
+    @if (account) {}
   } @else {
     <div class="col-md-3">
       <span class="hipster img-fluid rounded"></span>
@@ -36,14 +32,6 @@
         </div>
         } @else {
         <div class="alert alert-warning">
-            <span>If you want to </span>
-            <a class="alert-link" (click)="login()">sign in</a
-            ><span
-              >, you can try the default accounts:<br />- Administrator (login=&quot;admin&quot; and password=&quot;admin&quot;) <br />- User
-              (login=&quot;user&quot; and password=&quot;user&quot;).</span
-            >
-          </div>
-        <div class="alert alert-warning">
             <span>To use the app,</span>&nbsp;
             <a class="alert-link" routerLink="/login">Please sign in here!</a>
           </div>
@@ -64,20 +52,13 @@
         <button *jhiHasAnyAuthority="'ROLE_ADMIN'" [routerLink]="['/admin/user-management']" class="manage-patients custom-button px-5">
           <span class="pt-4">Manage Patients</span>
         </button>
-
-        <!-- <button type="submit" class="btn btn-primary custom-button book-appointment" [routerLink]="['/appointment/new']">
-          <span class="fw-bold text-dark">Book Appointment</span>
-        </button>
-        <button type="submit" class="btn btn-primary custom-button view-appointment" [routerLink]="['/appointment']">
-          <span class="fw-bold text-dark">View Appointments</span>
-        </button> -->
       </div>
     </div>
   </div>
 
   <!-- only show when signed in -->
   @if (account != null) {
-    @if (account) {
+    @if (account && isQueueServiceUp) {
       <!-- only show to patients  -->
       <div class="col-md-3 today-appt" *jhiHasAnyAuthority="'ROLE_USER'">
         <h3 class="fw-bold">Appointments Today</h3>
@@ -107,12 +88,12 @@
         </div>
         <br />
         <div class="next-queue">
-          <span>Next Queue No: </span>
+          <span>Next Queue No.: </span>
           <h3 class="q-number">{{ nextAppointment?.id }}</h3>
         </div>
         <br />
         <div class="your-queue" *jhiHasAnyAuthority="'ROLE_USER'">
-          <span>Your Q No.: </span>
+          <span>Your Queue No.: </span>
           <h3 class="q-number">{{ userQueueNum }}</h3>
           <span>People before you: </span>
           <h4 class="text-danger fw-bold">{{ numPeopleInFront }}</h4>
@@ -128,39 +109,17 @@
           <button class="btn btn-danger btn-md skip-btn" (click)="onClickNext(2)">Skip</button>
         </div>
       </div>
+    } @else {
+      <div class="col-md-5 service-container">
+        <div class="card">
+          <div class="icon">⚠️</div>
+          <h1>Queue Service Unavailable</h1>
+          <p>Sorry, something went wrong on our side. The service is temporarily unavailable. Please try again in a moment.</p>
+          <div>
+            <button class="btn primary" (click)="checkQueueServiceHealth()">Retry</button>
+          </div>
+        </div>
+      </div>
     }
   }
-
-  <!-- <p>If you have any question on JHipster:</p>
-
-    <ul>
-      <li><a href="https://www.jhipster.tech/" target="_blank" rel="noopener noreferrer">JHipster homepage</a></li>
-      <li>
-        <a href="https://stackoverflow.com/tags/jhipster/info" target="_blank" rel="noopener noreferrer">JHipster on Stack Overflow</a>
-      </li>
-      <li>
-        <a href="https://github.com/jhipster/generator-jhipster/issues?state=open" target="_blank" rel="noopener noreferrer"
-          >JHipster bug tracker</a
-        >
-      </li>
-      <li>
-        <a href="https://gitter.im/jhipster/generator-jhipster" target="_blank" rel="noopener noreferrer">JHipster public chat room</a>
-      </li>
-      <li><a href="https://twitter.com/jhipster" target="_blank" rel="noopener noreferrer">follow &#64;jhipster on Twitter</a></li>
-    </ul>
-
-    <p>
-      <span>If you like JHipster, don&apos;t forget to give us a star on</span>
-      <a href="https://github.com/jhipster/generator-jhipster" target="_blank" rel="noopener noreferrer">GitHub</a>!
-    </p> -->
 </div>
-<!-- <div class="row2">
-  <div class="ButtonDiv">
-    <button type="submit" class="btn btn-primary custom-button book-appointment" [routerLink]="['/appointment/new']">
-      <span class="fw-bold text-dark">Book Appointment</span>
-    </button>
-    <button type="submit" class="btn btn-primary custom-button view-appointment" [routerLink]="['/appointment']">
-      <span class="fw-bold text-dark">View Appointments</span>
-    </button>
-  </div>
-</div> -->
