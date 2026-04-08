@@ -16,15 +16,14 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
- * Base abstract class for entities which will hold definitions for created, last modified, created
- * by, last modified by attributes.
+ * Base abstract class for entities which will hold definitions for created, last modified, created by,
+ * last modified by attributes.
  */
 @Setter
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(value = {"createdBy", "createdDate", "lastModifiedBy",
-    "lastModifiedDate"}, allowGetters = true)
+@JsonIgnoreProperties(value = { "createdBy", "createdDate", "lastModifiedBy", "lastModifiedDate" }, allowGetters = true)
 public abstract class AbstractAuditingEntity<T> implements Serializable {
 
     @Serial

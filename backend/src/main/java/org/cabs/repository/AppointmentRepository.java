@@ -1,13 +1,10 @@
 package org.cabs.repository;
 
-import org.cabs.domain.Appointment;
-import org.cabs.domain.User;
-import org.cabs.service.dto.PatientDetailsDTO;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.transaction.Transactional;
 import java.util.List;
-import org.springframework.data.jpa.repository.*;
+import org.cabs.domain.Appointment;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -17,16 +14,6 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("unused")
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
-    @Query(
-        value = " SELECT " +
-        "     appt_datetime " +
-        " FROM " +
-        "     cabs.appointment " +
-        " where " +
-        "     DATE(appt_datetime) = :selectedDate ",
-        nativeQuery = true
-    )
-    List<String> getExistingTimeSlots(@Param("selectedDate") String selectedDate);
 
     @Modifying
     @Query(value = " DELETE FROM " + "     cabs.appointment A " + " where " + "     A.patient_id = :userId ", nativeQuery = true)

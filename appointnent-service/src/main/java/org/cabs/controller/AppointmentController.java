@@ -18,6 +18,7 @@ import org.cabs.repository.AppointmentRepository.PatientDetailsProjection;
 import org.cabs.repository.AppointmentRepository.PatientMappingsProjection;
 import org.cabs.service.AppointmentService;
 import org.cabs.service.UserService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -38,6 +39,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/appointments")
 @Slf4j
 public class AppointmentController {
+
+    @Value("${cabs.usr.defaultpw}")
+    private String password;
 
     private static final String ENTITY_NAME = "appointment";
 
@@ -93,7 +97,7 @@ public class AppointmentController {
             user.setDob(appointmentDTO.getDob());
             user.setGender(appointmentDTO.getGender());
 
-            User newUser = userService.registerUser(user, "P@ssw0rd");
+            User newUser = userService.registerUser(user, password);
             appointment.setPatientId(newUser.getId().intValue());
         }
 

@@ -75,13 +75,13 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
     @Column(name = "image_url", length = 256)
     private String imageUrl;
 
-    @Size(max = 20)
-    @Column(name = "activation_key", length = 20)
+    @Size(max = 36)
+    @Column(name = "activation_key", length = 36)
     @JsonIgnore
     private String activationKey;
 
-    @Size(max = 20)
-    @Column(name = "reset_key", length = 20)
+    @Size(max = 36)
+    @Column(name = "reset_key", length = 36)
     @JsonIgnore
     private String resetKey;
 
@@ -119,61 +119,6 @@ public class User extends AbstractAuditingEntity<Long> implements Serializable {
         this.login = StringUtils.lowerCase(login, Locale.ENGLISH);
     }
 
-//    public void setPassword(String password) {
-//        this.password = password;
-//    }
-//
-//    public void setFirstName(String firstName) {
-//        this.firstName = firstName;
-//    }
-//
-//    public void setLastName(String lastName) {
-//        this.lastName = lastName;
-//    }
-//
-//    public void setEmail(String email) {
-//        this.email = email;
-//    }
-//
-//    public void setImageUrl(String imageUrl) {
-//        this.imageUrl = imageUrl;
-//    }
-//
-//    public void setActivated(boolean activated) {
-//        this.activated = activated;
-//    }
-//
-//    public void setActivationKey(String activationKey) {
-//        this.activationKey = activationKey;
-//    }
-//
-//    public void setResetKey(String resetKey) {
-//        this.resetKey = resetKey;
-//    }
-//
-//    public void setResetDate(Instant resetDate) {
-//        this.resetDate = resetDate;
-//    }
-//
-//    public void setLangKey(String langKey) {
-//        this.langKey = langKey;
-//    }
-//
-//    public void setAuthorities(Set<Authority> authorities) {
-//        this.authorities = authorities;
-//    }
-//
-//    public void setPhoneNumber(String phoneNumber) {
-//        this.phoneNumber = phoneNumber;
-//    }
-//
-//    public void setDob(Date dob) {
-//        this.dob = dob;
-//    }
-//
-//    public void setGender(String gender) {
-//        this.gender = gender;
-//    }
 
     @Override
     public boolean equals(Object o) {
