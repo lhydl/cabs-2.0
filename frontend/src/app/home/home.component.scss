@@ -31,7 +31,7 @@ Main page styles
 @media (min-width: 768px) {
   .col-md-3,
   .col-md-9 {
-    margin-bottom: -60px;
+    margin-bottom: 60px;
   }
 }
 .col-md-3 {
@@ -184,9 +184,9 @@ button:hover {
 
 .admin-queue {
   padding-left: 40px;
-  // border-left: 1px solid #ccc; // vertical divider
   height: 550px;
-  align-items: flex-start;
+  display: flex;
+  align-items: center;
   justify-content: center;
   width: min-content;
 }

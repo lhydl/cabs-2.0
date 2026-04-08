@@ -103,7 +103,7 @@
       </div>
 
       <!-- only show to admin -->
-      <div class="col-md-3 admin-queue" *jhiHasAnyAuthority="'ROLE_ADMIN'">
+      <div class="col-md-2 admin-queue" *jhiHasAnyAuthority="'ROLE_ADMIN'">
         <div>
           <button class="btn btn-primary btn-md next-btn" (click)="onClickNext(1)">Next</button><br /><br />
           <button class="btn btn-danger btn-md skip-btn" (click)="onClickNext(2)">Skip</button>
@@ -116,7 +116,7 @@
           <h1>Queue Service Unavailable</h1>
           <p>Sorry, something went wrong on our side. The service is temporarily unavailable. Please try again in a moment.</p>
           <div>
-            <button class="btn primary" (click)="checkQueueServiceHealth()">Retry</button>
+            <button class="btn primary" (click)="getTodaysAppointments()">Retry</button>
           </div>
         </div>
       </div>

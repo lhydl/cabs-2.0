@@ -123,10 +123,17 @@ export default class HomeComponent implements OnInit, OnDestroy {
     if (this.currentAppointment !== undefined) {
       params = new HttpParams().set('id', this.currentAppointment.id).set('status', status);
     }
-    this.queueService.updateQueueStatus(params).subscribe((res: any) => {
-      if (res) {
+    this.queueService.updateQueueStatus(params).subscribe({
+      next: res => {
+        this.isQueueServiceUp = true;
         this.getTodaysAppointments();
-      }
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error('Health check failed:', err);
+        if (err.status === 503) {
+          this.isQueueServiceUp = false;
+        }
+      },
     });
   }
 
