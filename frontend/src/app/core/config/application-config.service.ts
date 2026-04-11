@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { environment } from 'environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -19,12 +20,19 @@ export class ApplicationConfigService {
     return this.microfrontend;
   }
 
+  // getEndpointFor(api: string, microservice?: string): string {
+  //   if (microservice) {
+  //     this.setEndpointPrefix('/api-gateway/');
+  //     return `${this.endpointPrefix}${microservice}/${api}`;
+  //   }
+  //   this.setEndpointPrefix('/api-gateway/cabs/');
+  //   return `${this.endpointPrefix}${api}`;
+  // }
+
   getEndpointFor(api: string, microservice?: string): string {
     if (microservice) {
-      this.setEndpointPrefix('/api-gateway/');
-      return `${this.endpointPrefix}${microservice}/${api}`;
+      return `${environment.apiBaseUrl}/${microservice}/${api}`;
     }
-    this.setEndpointPrefix('/api-gateway/cabs/');
-    return `${this.endpointPrefix}${api}`;
+    return `${environment.apiBaseUrl}/cabs/${api}`;
   }
 }

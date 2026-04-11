@@ -6,3 +6,5 @@ backend/.idea/vcs.xml
 .idea/misc.xml
 .idea/modules.xml
 .idea/workspace.xml
+frontend/dist/
+frontend/target/

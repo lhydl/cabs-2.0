@@ -2,7 +2,7 @@
 
 Please do the following in sequence for initial local setup.
 
-## 1.Setup Backend (Microservices Containers)
+## 1.Setup Backend and Run Containers Locally
 
 Prerequisites:
 
@@ -42,7 +42,18 @@ or if using docker
 docker compose up --build
 ```
 
-## 3. Setup Frontend
+There should be 6 containers running, namely `frontend`, `api-gateway`, `core-service`, `appointment-service`, `queue-service`, `mysql`.
+
+Navigate to http://localhost:4200 in your browser to access the app's frontend.
+
+Login to the app with the following credentials:
+
+```
+Username: admin
+Password: admin
+```
+
+## 2. Setup Frontend for Local Development
 
 Prerequisites:
 
@@ -63,7 +74,7 @@ Run the following command in the project folder using powershell:
 npm run start
 ```
 
-Navigate to http://localhost:9000/ in your browser to access the app's frontend.
+Navigate to http://localhost:9000 in your browser to access the app's frontend.
 
 Login to the app with the following credentials:
 

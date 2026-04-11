@@ -23,18 +23,13 @@
             "customWebpackConfig": {
               "path": "./webpack/webpack.custom.js"
             },
-            "outputPath": "target/classes/static/",
+            "outputPath": "dist/cabs",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": [
-              "src/content",
-              "src/favicon.ico",
-              "src/manifest.webapp",
-              "src/robots.txt"
-            ],
+            "assets": ["src/content", "src/favicon.ico", "src/manifest.webapp", "src/robots.txt"],
             "styles": ["src/content/scss/vendor.scss", "src/content/scss/global.scss"],
             "scripts": []
           },
@@ -47,8 +42,7 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
-              "serviceWorker": true,
-              "ngswConfigPath": "ngsw-config.json",
+              "serviceWorker": false,
               "budgets": [
                 {
                   "type": "initial",

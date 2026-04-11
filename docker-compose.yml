@@ -49,6 +49,13 @@ services:
       - "8084:8084"
     environment:
       SPRING_PROFILES_ACTIVE: docker
+      
+  frontend:
+    build:
+        context: ./frontend
+    container_name: frontend
+    ports:
+        - "4200:80"
 
 volumes:
   mysql_data:
