@@ -1,23 +1,22 @@
-import { HttpParams, HttpResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AppointmentFormGroup, AppointmentFormService } from './appointment-form.service';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
+import { addMinutes, format } from 'date-fns';
 import { finalize, takeUntil } from 'rxjs/operators';
 
-import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import SharedModule from 'app/shared/shared.module';
-
-import { DatePipe } from '@angular/common';
-import { UserManagementService } from 'app/admin/user-management/service/user-management.service';
-import { User } from 'app/admin/user-management/user-management.model';
 import { Account } from 'app/core/auth/account.model';
 import { AccountService } from 'app/core/auth/account.service';
-import HasAnyAuthorityDirective from 'app/shared/auth/has-any-authority.directive';
-import { addMinutes, format } from 'date-fns';
-import dayjs from 'dayjs/esm';
-import { IAppointment } from '../appointment.model';
 import { AppointmentService } from '../service/appointment.service';
-import { AppointmentFormGroup, AppointmentFormService } from './appointment-form.service';
+import { DatePipe } from '@angular/common';
+import HasAnyAuthorityDirective from 'app/shared/auth/has-any-authority.directive';
+import { IAppointment } from '../appointment.model';
+import SharedModule from 'app/shared/shared.module';
+import { User } from 'app/admin/user-management/user-management.model';
+import { UserManagementService } from 'app/admin/user-management/service/user-management.service';
+import dayjs from 'dayjs/esm';
 
 @Component({
   standalone: true,
@@ -58,7 +57,7 @@ export class AppointmentUpdateComponent implements OnInit {
     private accountService: AccountService,
     private userService: UserManagementService,
     private datePipe: DatePipe,
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.accountService
@@ -152,8 +151,10 @@ export class AppointmentUpdateComponent implements OnInit {
     const params = new HttpParams().set('selectedDate', selectedDate);
     this.appointmentService.getExistingTimeSlots(params).subscribe((res: any) => {
       if (res) {
+        console.log('res----' + res);
         this.existingTimeslots = res;
         this.formatTimeslots();
+        console.log('formatted res----' + this.formattedExistingTimeslots.toLocaleString());
         const startTime = new Date('2000-01-01T08:00:00'); // 08:00 AM
         const endTime = new Date('2000-01-01T20:00:00'); // 08:00 PM
         // If selected today's date, available timeslots are after current time
@@ -175,14 +176,35 @@ export class AppointmentUpdateComponent implements OnInit {
     });
   }
 
+  // Hot fix for frontend timezone when deployed in container
   formatTimeslots(): void {
     this.formattedExistingTimeslots = this.existingTimeslots
       .map(slot => {
-        const dateObject = new Date(slot);
-        return this.datePipe.transform(dateObject, 'HH:mm');
+        const [datePart, timePart] = slot.split(' ');
+        const cleanTime = timePart.split('.')[0];
+
+        const [y, m, d] = datePart.split('-').map(Number);
+        const [h, min, s] = cleanTime.split(':').map(Number);
+
+        // treat backend value as UTC explicitly
+        const utcDate = new Date(Date.UTC(y, m - 1, d, h, min, s));
+
+        // convert to Singapore time
+        utcDate.setHours(utcDate.getUTCHours() + 8);
+
+        return this.datePipe.transform(utcDate, 'HH:mm');
       })
-      .filter(formattedSlot => formattedSlot !== null) as string[];
+      .filter(Boolean) as string[];
   }
+
+  // formatTimeslots(): void {
+  //   this.formattedExistingTimeslots = this.existingTimeslots
+  //     .map(slot => {
+  //       const dateObject = new Date(slot);
+  //       return this.datePipe.transform(dateObject, 'HH:mm');
+  //     })
+  //     .filter(formattedSlot => formattedSlot !== null) as string[];
+  // }
 
   save(): void {
     this.isSaving = true;
