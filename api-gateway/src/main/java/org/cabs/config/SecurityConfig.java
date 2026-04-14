@@ -18,9 +18,9 @@ public class SecurityConfig {
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/cabs/**").permitAll()
-                .requestMatchers("/appt/**").permitAll()
-                .requestMatchers("/queue/**").permitAll()
+                .requestMatchers("/api-gateway/cabs/**").permitAll()
+                .requestMatchers("/api-gateway/appt/**").permitAll()
+                .requestMatchers("/api-gateway/queue/**").permitAll()
                 .requestMatchers("/error").permitAll()
                 .anyRequest().authenticated()
             );

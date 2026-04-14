@@ -1,7 +1,5 @@
 server:
   port: 8080
-#  servlet:
-#    context-path: /api-gateway
 
 spring:
   application:
@@ -15,20 +13,20 @@ spring:
             - id: cabs-route
               uri: http://core-service:8082
               predicates:
-                - Path=/cabs/**
+                - Path=/api-gateway/cabs/**
               filters:
                 - StripPrefix=2
 
             - id: cabs-appt-route
               uri: http://appointment-service:8083
               predicates:
-                - Path=/appt/**
+                - Path=/api-gateway/appt/**
               filters:
                 - StripPrefix=2
 
             - id: cabs-queue-route
               uri: http://queue-service:8084
               predicates:
-                - Path=/queue/**
+                - Path=/api-gateway/queue/**
               filters:
                 - StripPrefix=2
