@@ -21,7 +21,8 @@ Ensure you have the following installed:
 * Podman Desktop (recommended)
   https://podman-desktop.io/downloads
 
-  > During installation, enable **WSL** and install all recommended components (podman-machine, etc.)
+  > During installation, enable **WSL** and install all recommended components (podman-machine,
+  etc.)
 
 * (Optional) Docker (can be used instead of Podman)
 
@@ -146,7 +147,7 @@ minikube start --driver=podman
 
 ## 🏗 Build Images
 
-Run each command:
+Navigate to the project root folder where the Kubernetes yaml files resides, then run each command:
 
 ```powershell
 minikube image build -t api-gateway:1.0 ./api-gateway
@@ -159,7 +160,7 @@ minikube image build -t frontend:1.0 ./frontend
 ---
 
 ## 🚀 Deploy to Kubernetes
-
+At the project root folder, run the following command:
 ```powershell
 kubectl apply -f .
 ```
@@ -215,6 +216,19 @@ Kubernetes will:
 
 ---
 
+### Other useful kubectl command
+
+To restart a service after rebuild:
+
+```powershell
+kubectl rollout restart deployment <service-name>
+```
+
+To view logs:
+```powershell
+kubectl logs <pod-name>
+```
+
 # 💻 3. Frontend Setup (Local Development)
 
 ## 📌 Prerequisites
@@ -258,7 +272,7 @@ npm run start
 # ✅ Summary
 
 | Mode       | URL                   | Notes                     |
-| ---------- | --------------------- | ------------------------- |
+|------------|-----------------------|---------------------------|
 | Docker     | http://localhost:4200 | Full stack via containers |
 | Kubernetes | auto-open             | Uses Minikube service     |
 | Local FE   | http://localhost:9000 | Frontend-only dev mode    |
