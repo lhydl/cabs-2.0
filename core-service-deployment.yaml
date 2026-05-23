@@ -23,7 +23,7 @@ spec:
       containers:
         - env:
             - name: SPRING_PROFILES_ACTIVE
-              value: docker
+              value: prod
           image: core-service:1.0
           imagePullPolicy: Never
           name: core-service

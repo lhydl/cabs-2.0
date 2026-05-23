@@ -10,21 +10,21 @@ Follow this guide step-by-step to set up and run the project locally.
 
 Ensure you have the following installed:
 
-* Clone the repository
+- Clone the repository
   https://github.com/lhydl/cabs-2.0.git
 
-* IntelliJ IDEA
+- IntelliJ IDEA
   https://www.jetbrains.com/idea/download/?section=windows
 
-* JDK 21 or later
+- JDK 21 or later
 
-* Podman Desktop (recommended)
+- Podman Desktop (recommended)
   https://podman-desktop.io/downloads
 
   > During installation, enable **WSL** and install all recommended components (podman-machine,
-  etc.)
+  > etc.)
 
-* (Optional) Docker (can be used instead of Podman)
+- (Optional) Docker (can be used instead of Podman)
 
 ---
 
@@ -32,10 +32,10 @@ Ensure you have the following installed:
 
 Open the following folders in IntelliJ **as Gradle projects**:
 
-* `api-gateway`
-* `core-service`
-* `appointment-service`
-* `queue-service`
+- `api-gateway`
+- `core-service`
+- `appointment-service`
+- `queue-service`
 
 ---
 
@@ -43,8 +43,8 @@ Open the following folders in IntelliJ **as Gradle projects**:
 
 In `core-service`:
 
-* Open `application-docker.properties`
-* Ensure:
+- Open `application-docker.properties`
+- Ensure:
 
   ```
   spring.liquibase.enabled=true
@@ -66,6 +66,7 @@ For **each service**:
    ```
    bootJar
    ```
+
 4. Verify the JAR file is generated at:
 
    ```
@@ -83,14 +84,16 @@ From the project root (where `docker-compose.yml` is located):
 ### Using Podman
 
 ```powershell
-podman compose up --build
+podman compose up --build -d
 ```
 
 ### Using Docker
 
 ```powershell
-docker compose up --build
+docker compose up --build -d
 ```
+
+Note: The -d flag runs containers in the background (detached mode), while --build forces Docker to rebuild the images before launching.
 
 ---
 
@@ -98,19 +101,19 @@ docker compose up --build
 
 You should see **6 running containers**:
 
-* frontend
-* api-gateway
-* core-service
-* appointment-service
-* queue-service
-* mysql
+- frontend
+- api-gateway
+- core-service
+- appointment-service
+- queue-service
+- mysql
 
 ---
 
 ## 🌐 Access Application
 
-* URL: http://localhost:4200
-* Login:
+- URL: http://localhost:4200
+- Login:
 
   ```
   Username: admin
@@ -123,8 +126,8 @@ You should see **6 running containers**:
 
 Stop any service (e.g. `appointment-service` or `queue-service`):
 
-* The application will still function
-* Only the affected module will show **Service Unavailable**
+- The application will still function
+- Only the affected module will show **Service Unavailable**
 
 ---
 
@@ -132,7 +135,7 @@ Stop any service (e.g. `appointment-service` or `queue-service`):
 
 ## 📌 Prerequisites
 
-* Complete **Section 1 (Steps 1–3)**
+- Complete **Section 1 (Steps 1–3)**
 
 ---
 
@@ -160,7 +163,9 @@ minikube image build -t frontend:1.0 ./frontend
 ---
 
 ## 🚀 Deploy to Kubernetes
+
 At the project root folder, run the following command:
+
 ```powershell
 kubectl apply -f .
 ```
@@ -211,8 +216,8 @@ kubectl delete pod <pod-name>
 
 Kubernetes will:
 
-* Automatically recreate the pod
-* Demonstrate **self-healing capability**
+- Automatically recreate the pod
+- Demonstrate **self-healing capability**
 
 ---
 
@@ -225,6 +230,7 @@ kubectl rollout restart deployment <service-name>
 ```
 
 To view logs:
+
 ```powershell
 kubectl logs <pod-name>
 ```
@@ -233,16 +239,16 @@ kubectl logs <pod-name>
 
 ## 📌 Prerequisites
 
-* Node.js
+- Node.js
   https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
 
-* Angular CLI:
+- Angular CLI:
 
 ```powershell
 npm install -g @angular/cli
 ```
 
-* VS Code (or any preferred editor)
+- VS Code (or any preferred editor)
 
 ---
 
@@ -259,8 +265,8 @@ npm run start
 
 ## 🌐 Access Frontend
 
-* URL: http://localhost:9000
-* Login:
+- URL: http://localhost:9000
+- Login:
 
   ```
   Username: admin
@@ -272,7 +278,7 @@ npm run start
 # ✅ Summary
 
 | Mode       | URL                   | Notes                     |
-|------------|-----------------------|---------------------------|
+| ---------- | --------------------- | ------------------------- |
 | Docker     | http://localhost:4200 | Full stack via containers |
 | Kubernetes | auto-open             | Uses Minikube service     |
 | Local FE   | http://localhost:9000 | Frontend-only dev mode    |
@@ -281,8 +287,8 @@ npm run start
 
 # 💡 Tips
 
-* Use Docker setup for **quick testing**
-* Use Kubernetes setup for **demoing scalability & resilience**
-* Use local frontend for **UI development**
+- Use Docker setup for **quick testing**
+- Use Kubernetes setup for **demoing scalability & resilience**
+- Use local frontend for **UI development**
 
 ---

@@ -2,6 +2,10 @@ spring:
   profiles:
     active: local
 
+cabs:
+  jwt:
+    secret: ODI3ZDg3M2IwNGM1NGQ1ZGI5MTE1YWU2ODEzMGM3NGExMTNiNGZiODRhZTQ4Mzg1NjRhZjUwMDYzODU4Nzc4YWFhZjI3ZGEyYWY1Yjc1ODAyMzE1MzNmNzUwZmUyODliNmZhMTBlNGJmYzExMGY1MTdhNmVmZGJiOTA1OGFiZDk=
+
 logging:
   level:
     org.springframework.security: DEBUG
