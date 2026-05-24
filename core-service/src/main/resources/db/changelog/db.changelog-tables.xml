@@ -5,19 +5,8 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-
-  <!-- Create appointment table -->
-  <changeSet author="cabs-app" failOnError="false" id="1" runOnChange="true">
-    <preConditions onFail="MARK_RAN">
-      <not>
-        <tableExists tableName="appointment"/>
-      </not>
-    </preConditions>
-    <sqlFile path="db/changelog/table/appointment.sql"/>
-  </changeSet>
-
   <!-- Create jhi_authority table -->
-  <changeSet author="jhi_authority" failOnError="false" id="2" runOnChange="true">
+  <changeSet author="cabs-app-table" failOnError="false" id="1" runOnChange="true">
     <preConditions onFail="MARK_RAN">
       <not>
         <tableExists tableName="jhi_authority"/>
@@ -27,7 +16,7 @@
   </changeSet>
 
   <!-- Create jhi_user table -->
-  <changeSet author="cabs-app" failOnError="false" id="3" runOnChange="true">
+  <changeSet author="cabs-app-table" failOnError="false" id="2" runOnChange="true">
     <preConditions onFail="MARK_RAN">
       <not>
         <tableExists tableName="jhi_user"/>
@@ -37,13 +26,23 @@
   </changeSet>
 
   <!-- Create jhi_user_authority table -->
-  <changeSet author="cabs-app" failOnError="false" id="4" runOnChange="true">
+  <changeSet author="cabs-app-table" failOnError="false" id="3" runOnChange="true">
     <preConditions onFail="MARK_RAN">
       <not>
         <tableExists tableName="jhi_user_authority"/>
       </not>
     </preConditions>
     <sqlFile path="db/changelog/table/jhi_user_authority.sql"/>
+  </changeSet>
+
+  <!-- Create appointment table -->
+  <changeSet author="cabs-app-table" failOnError="false" id="4" runOnChange="true">
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <tableExists tableName="appointment"/>
+      </not>
+    </preConditions>
+    <sqlFile path="db/changelog/table/appointment.sql"/>
   </changeSet>
 
 </databaseChangeLog>

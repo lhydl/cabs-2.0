@@ -71,7 +71,6 @@ public class AppointmentController {
         appointment.setApptDatetime(appointmentDTO.getApptDatetime());
         appointment.setRemarks(appointmentDTO.getRemarks());
         appointment.setPatientId(appointmentDTO.getPatientId());
-        appointment.setDoctorId(appointmentDTO.getDoctorId());
 
         log.debug("REST request to save Appointment : {}", appointment);
 

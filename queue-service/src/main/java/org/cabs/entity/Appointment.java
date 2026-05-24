@@ -48,10 +48,7 @@ public class Appointment implements Serializable {
     @Column(name = "patient_id", nullable = false)
     private Integer patientId;
 
-    @Column(name = "doctor_id", nullable = true)
-    private Integer doctorId;
-
-    @Column(name = "status", nullable = true)
+    @Column(name = "status")
     private Integer status = 0;
 
 
@@ -80,7 +77,6 @@ public class Appointment implements Serializable {
             ", apptDatetime='" + getApptDatetime() + "'" +
             ", remarks='" + getRemarks() + "'" +
             ", patientId=" + getPatientId() +
-            ", doctorId=" + getDoctorId() +
             ", status=" + getStatus() +
             "}";
     }
